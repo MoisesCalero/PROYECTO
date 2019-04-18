@@ -1,0 +1,70 @@
+	.login-form {
+		width: 385px;
+		margin: 30px auto;
+		margin-top:13%;
+		border:1px;
+	}
+    .login-form form {        
+    	margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+        background-color: #fdffee;
+        
+    }
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+    .form-control, .login-btn {
+        min-height: 38px;
+        border-radius: 2px;
+    }
+    .input-group-addon .fa {
+        font-size: 18px;
+    }
+    .login-btn {
+        font-size: 15px;
+        font-weight: bold;
+    }
+	
+    .social-btn .btn:hover {
+        opacity: 0.9;
+    }
+	.social-btn .btn-primary {
+        background: #507cc0;
+    }
+	.social-btn .btn-info {
+		background: #64ccf1;
+	}
+	.social-btn .btn-danger {
+		background: #df4930;
+	}
+    .or-seperator {
+        margin-top: 20px;
+        text-align: center;
+        border-top: 1px solid #ccc;
+    }
+    .or-seperator i {
+        padding: 0 10px;
+        background: #f7f7f7;
+        position: relative;
+        top: -11px;
+        
+    } 
+    body{
+    	background-color: #E3E3E3;
+    }
+    .pull-right{
+		margin-left: 35%;
+    }
+    .btn{
+    	float:right;
+    	margin-right: 10px;
+    	margin-bottom: 10px;
+    }
+    .modal-content{
+    	background-color: #fdffee;
+    }
+    span{
+    	color:red;
+    }
