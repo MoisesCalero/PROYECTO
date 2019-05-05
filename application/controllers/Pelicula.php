@@ -66,12 +66,12 @@ class Pelicula extends CI_Controller
     
     public function updatePost()
     {
-        $nombre_nuevo = isset($_POST['nombre_nuevo']) && ! empty($_POST['nombre_nuevo']) ? $_POST['nombre_nuevo'] : null;
-        $descripcion_nuevo = isset($_POST['descripcion_nuevo']) && ! empty($_POST['descripcion_nuevo']) ? $_POST['descripcion_nuevo'] : null;
-        $genero_nuevo = isset($_POST['genero_nuevo']) && ! empty($_POST['genero_nuevo']) ? $_POST['genero_nuevo'] : null;
-        $duracion_nuevo = isset($_POST['duracion_nuevo']) && ! empty($_POST['duracion_nuevo']) ? $_POST['duracion_nuevo'] : null;
-        $valoracion_nuevo = isset($_POST['valoracion_nuevo']) && ! empty($_POST['valoracion_nuevo']) ? $_POST['valoracion_nuevo'] : null;
-        $fecha_nuevo = isset($_POST['fecha_nuevo']) && ! empty($_POST['fecha_nuevo']) ? $_POST['fecha_nuevo'] : null;
+        $nombre_nuevo = isset($_POST['nombre']) && ! empty($_POST['nombre']) ? $_POST['nombre'] : null;
+        $descripcion_nuevo = isset($_POST['descripcion']) && ! empty($_POST['descripcion']) ? $_POST['descripcion'] : null;
+        $genero_nuevo = isset($_POST['genero']) && ! empty($_POST['genero']) ? $_POST['genero'] : null;
+        $duracion_nuevo = isset($_POST['duracion']) && ! empty($_POST['duracion']) ? $_POST['duracion'] : null;
+        $valoracion_nuevo = isset($_POST['valoracion']) && ! empty($_POST['valoracion']) ? $_POST['valoracion'] : null;
+        $fecha_nuevo = isset($_POST['fecha']) && ! empty($_POST['fecha']) ? $_POST['fecha'] : null;
         
         $id = isset($_POST['id']) && ! empty($_POST['id']) ? $_POST['id'] : null;
         

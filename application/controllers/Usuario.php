@@ -25,6 +25,7 @@ class Usuario extends CI_Controller
                     session_start();
                     $_SESSION['usuario'] = $nombreUsuario;
                     $_SESSION['id'] = $data['usuario']->id;
+                    $_SESSION['rol']=$data['usuario']->rol;
                     header("location: ../home/presentacion");
                 }
                 else{
@@ -154,6 +155,22 @@ class Usuario extends CI_Controller
         $_SESSION = [];
         session_destroy();
         header("location: ../home/presentacion");
+    }
+    public function upgrade(){
+        $id=isset($_POST['id']) && ! empty($_POST['id'])?$_POST['id']:null;
+        if($id!=null){
+            $this->load->model('usuario_model');
+            $data['usuario'] = $this->usuario_model->getUsuarioById($id);
+            frame($this, 'usuario/upgrade', $data);
+        }
+    }
+    public function upgradePost(){
+        $id=isset($_POST['id']) && ! empty($_POST['id'])?$_POST['id']:null;
+        if($id!=null){
+            $this->load->model('usuario_model');
+            $data['usuario'] = $this->usuario_model->mejorarCuenta($id);
+            frame($this, 'home/presentacion', $data);
+        }
     }
 }
 

@@ -67,13 +67,13 @@ class Musica extends CI_Controller
     
     public function updatePost()
     {
-        $nombre_nuevo = isset($_POST['nombre_nuevo']) && ! empty($_POST['nombre_nuevo']) ? $_POST['nombre_nuevo'] : null;
-        $album_nuevo = isset($_POST['album_nuevo']) && ! empty($_POST['album_nuevo']) ? $_POST['album_nuevo'] : null;
-        $grupo_nuevo = isset($_POST['grupo_nuevo']) && ! empty($_POST['grupo_nuevo']) ? $_POST['grupo_nuevo'] : null;
-        $genero_nuevo = isset($_POST['genero_nuevo']) && ! empty($_POST['genero_nuevo']) ? $_POST['genero_nuevo'] : null;
-        $duracion_nuevo = isset($_POST['duracion_nuevo']) && ! empty($_POST['duracion_nuevo']) ? $_POST['duracion_nuevo'] : null;
-        $valoracion_nuevo = isset($_POST['valoracion_nuevo']) && ! empty($_POST['valoracion_nuevo']) ? $_POST['valoracion_nuevo'] : null;
-        $fecha_nuevo = isset($_POST['fecha_nuevo']) && ! empty($_POST['fecha_nuevo']) ? $_POST['fecha_nuevo'] : null;
+        $nombre_nuevo = isset($_POST['nombre']) && ! empty($_POST['nombre']) ? $_POST['nombre'] : null;
+        $album_nuevo = isset($_POST['album']) && ! empty($_POST['album']) ? $_POST['album'] : null;
+        $grupo_nuevo = isset($_POST['grupo']) && ! empty($_POST['grupo']) ? $_POST['grupo'] : null;
+        $genero_nuevo = isset($_POST['genero']) && ! empty($_POST['genero']) ? $_POST['genero'] : null;
+        $duracion_nuevo = isset($_POST['duracion']) && ! empty($_POST['duracion']) ? $_POST['duracion'] : null;
+        $valoracion_nuevo = isset($_POST['valoracion']) && ! empty($_POST['valoracion']) ? $_POST['valoracion'] : null;
+        $fecha_nuevo = isset($_POST['fecha']) && ! empty($_POST['fecha']) ? $_POST['fecha'] : null;
         
         $id = isset($_POST['id']) && ! empty($_POST['id']) ? $_POST['id'] : null;
         
