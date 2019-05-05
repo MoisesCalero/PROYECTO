@@ -42,7 +42,7 @@ class Musica_model extends CI_Model
         return R::findAll('musica');
     }
     
-    public function update($id, $nombre_nuevo, $grupo_nuevo, $album_nuevo, $descripcion_nuevo, $genero_nuevo, $duracion_nuevo, $valoracion_nuevo, $fecha_nuevo)
+    public function update($id, $nombre_nuevo, $grupo_nuevo, $album_nuevo, $genero_nuevo, $duracion_nuevo, $valoracion_nuevo, $fecha_nuevo)
     {
         $ok = false;
         
@@ -52,7 +52,7 @@ class Musica_model extends CI_Model
         $ok = ($bean != null);
         
         if ($ok) {
-            $musica = R::load('pelicula', $id);
+            $musica = R::load('musica', $id);
             $musica->nombre = $nombre_nuevo;
             $musica->grupo= $grupo_nuevo;
             $musica->album= $album_nuevo;

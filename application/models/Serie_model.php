@@ -53,7 +53,7 @@ class Serie_model extends CI_Model
         $ok = ($bean != null);
         
         if ($ok) {
-            $serie = R::load('pelicula', $id);
+            $serie = R::load('serie', $id);
             $serie->nombre = $nombre_nuevo;
             $serie->descripcion= $descripcion_nuevo;
             $serie->genero = $genero_nuevo;

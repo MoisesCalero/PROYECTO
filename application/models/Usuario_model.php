@@ -72,4 +72,9 @@ class Usuario_model extends CI_Model
         $usuario = R::load('usuario', $id);
         R::trash($usuario);
     }
+    public function mejorarCuenta($id){
+        $usuario=R::load('usuario', $id);
+        $usuario->rol="premium";
+        R::store($usuario);
+    }
 }
