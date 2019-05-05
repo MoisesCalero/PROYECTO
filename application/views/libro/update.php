@@ -1,45 +1,44 @@
 <body>
 	<div class="modal-dialog">
 			<div class="modal-content">
-				<form action="<?=base_url()?>pelicula/updatePost" method="POST">
+				<form action="<?=base_url()?>libro/updatePost" method="POST">
 					<div class="modal-header">						
-						<h4 class="modal-title">Actualizar pel�cula:</h4>
+						<h4 class="modal-title">Actualizar libro:</h4>
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
-						<label><span>*</span>Correo electrónico:</label>
-							<input type="mail" class="form-control" name="correo" required value="<?=$usuario->correo?>">
+						<label><span>*</span>Nombre:</label>
+							<input type="mail" class="form-control" name="nombre" required value="<?=$libro->nombre?>">
 						
-							<label><span>*</span>Nombre de usuario:</label>
-							<input type="text" class="form-control form-control-sm" name="nombreUsuario" required value="<?=$usuario->nombreUsuario?>">
+							<label><span>*</span>Descripción:</label>
+							<input type="text" class="form-control form-control-sm" name="descripcion" required value="<?=$libro->descripcion?>">
 											
 							
-							<label><span>*</span>Contraseña:</label>
-							<input type="password" class="form-control form-control-sm" name="clave" required value="<?=$usuario->clave?>">
-
-							<label><span>*</span>Confirmar Contraseña:</label>
-							<input type="password" class="form-control form-control-sm" name="claveRepe" required>
+							<label><span>*</span>Género:</label>
+							<input type="text" class="form-control form-control-sm" name="genero" required value="<?=$libro->genero?>">
 							
-							<label>Nombre:</label>
-							<input type="text" class="form-control form-control-sm" name="nombre" value="<?=$usuario->nombre?>">
+							<label>Número de páginas:</label>
+							<input type="text" class="form-control form-control-sm" name="numero_paginas" value="<?=$libro->numeroPaginas?>">
 
-							<label>Apellidos:</label>
-							<input type="text" class="form-control form-control-sm" name="apellidos"  value="<?=$usuario->apellidos?>">
+							<label>Autor:</label>
+							<input type="text" class="form-control form-control-sm" name="autor"  value="<?=$libro->autor?>">
 
-							<label>Fecha de Nacimiento:</label>
-							<input type="date" class="form-control form-control-sm" name="fnac" >
+							<label>Editorial:</label>
+							<input type="text" class="form-control form-control-sm" name="editorial" value="<?=$libro->editorial ?>">
 							
-							<label>Descripción:</label>
-							<textarea class="form-control form-control-sm" name="descripcion"  value="<?=$usuario->descripcion?>"></textarea>
+							<label>Valoración:</label>
+							<input type="text" class="form-control form-control-sm" name="valoracion" value="<?=$libro->valoracion ?>">
+							
+							<label>Fecha de publicación:</label>
+							<input type="text" class="form-control form-control-sm" name="fecha" value="<?=$libro->fecha ?>">
+							
+							<input type="hidden" class="form-control form-control-sm" name="id" value="<?=$libro->id ?>">
 
 						</div>
 					</div>
 						<span style="margin-left: 15px;">*</span> Campos obligatiorios
 						<input type="submit" class="btn btn-info" value="Crear" onclick="">
 				</form>
-				Rol
-	<input type="text" name="rol" value="<?=$usuario->rol?>" disabled="true" />
-	<a href="<?php base_url()?>usuario/mejorar"><button type="button" name="mejorar">Mejorar rol</button></a>
 			</div>
 				
 

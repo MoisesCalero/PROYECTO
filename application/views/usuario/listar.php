@@ -24,4 +24,8 @@
 		<button>Cerrar sesión</button>
 		<input type="hidden" name="id" value="<?=$usuario->id ?>" />
 	</form>
+		<form action="<?=base_url()?>usuario/upgrade" method="post">
+		<button>Mejorar mi cuenta</button>
+		<input type="hidden" name="id" value="<?=$usuario->id ?>" />
+	</form>
 </div>

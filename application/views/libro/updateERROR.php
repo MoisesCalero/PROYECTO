@@ -1,1 +1,1 @@
-<h2>Persona no pudo ser modificado (dni ya existente)</h2>
+<h2>Libro no pudo ser modificado</h2>

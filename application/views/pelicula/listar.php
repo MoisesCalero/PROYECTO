@@ -28,6 +28,12 @@
 			  <div class="card-body">
 			    <h5 class="card-title"><?=$pelicula->nombre ?></h5>
 			    <p class="card-text"><?= $pelicula->descripcion?></p>
+			    <?php if($_SESSION['rol']=="administrador"): ?>
+			    <form action="<?=base_url()?>pelicula/update" method="post">
+			    <input type="hidden" name="id" value="<?=$pelicula->id ?>"/>
+   			    <input type="submit" class="btn btn-primary btn-admin" value="Editar esta película"/>
+			    </form>
+			    <?php endif;?>
 			    <form action="<?=base_url()?>pelicula/detalles" method="post">
 			    <input type="hidden" name="id" value="<?=$pelicula->id ?>"/>
    			    <input type="submit" class="btn btn-primary" value="Más información..."/>

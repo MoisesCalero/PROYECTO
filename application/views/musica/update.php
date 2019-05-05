@@ -1,45 +1,39 @@
 <body>
-	<div class="modal-dialog">
+		<div class="modal-dialog">
 			<div class="modal-content">
-				<form action="<?=base_url()?>pelicula/updatePost" method="POST">
+				<form action="<?=base_url()?>musica/updatePost" method="POST">
 					<div class="modal-header">						
-						<h4 class="modal-title">Actualizar música:</h4>
+						<h4 class="modal-title">Crear música:</h4>
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
-						<label><span>*</span>Correo electrónico:</label>
-							<input type="mail" class="form-control" name="correo" required value="<?=$usuario->correo?>">
+						<label><span>*</span>Nombre:</label>
+							<input type="text" class="form-control" name="nombre" value="<?=$musica->nombre?>">
 						
-							<label><span>*</span>Nombre de usuario:</label>
-							<input type="text" class="form-control form-control-sm" name="nombreUsuario" required value="<?=$usuario->nombreUsuario?>">
+							<label><span>*</span>Grupo:</label>
+							<input type="text" class="form-control form-control-sm" name="grupo" value="<?=$musica->grupo?>">
 											
+							<label>Álbum:</label>
+							<input type="text" class="form-control form-control-sm" name="album" value="<?=$musica->album?>" >
 							
-							<label><span>*</span>Contraseña:</label>
-							<input type="password" class="form-control form-control-sm" name="clave" required value="<?=$usuario->clave?>">
-
-							<label><span>*</span>Confirmar Contraseña:</label>
-							<input type="password" class="form-control form-control-sm" name="claveRepe" required>
+							<label>Género:</label>
+							<input type="text" class="form-control form-control-sm" name="genero" value="<?=$musica->genero?>" >
 							
-							<label>Nombre:</label>
-							<input type="text" class="form-control form-control-sm" name="nombre" value="<?=$usuario->nombre?>">
+							<label><span>*</span>Duración:</label>
+							<input type="text" class="form-control form-control-sm" name="duracion" value="<?=$musica->duracion?>">
 
-							<label>Apellidos:</label>
-							<input type="text" class="form-control form-control-sm" name="apellidos"  value="<?=$usuario->apellidos?>">
+							<label>Valoración:</label>
+							<input type="text" class="form-control form-control-sm" name="valoracion" value="<?=$musica->valoracion?>" >
 
-							<label>Fecha de Nacimiento:</label>
-							<input type="date" class="form-control form-control-sm" name="fnac" >
+							<label><span>*</span>Fecha:</label>
+							<input type="text" class="form-control form-control-sm" name="fecha" value="<?=$musica->fecha?>" >
 							
-							<label>Descripción:</label>
-							<textarea class="form-control form-control-sm" name="descripcion"  value="<?=$usuario->descripcion?>"></textarea>
-
+							<input type="text" class="form-control form-control-sm" name="id" value="<?=$musica->id?>" >
 						</div>
 					</div>
 						<span style="margin-left: 15px;">*</span> Campos obligatiorios
-						<input type="submit" class="btn btn-info" value="Crear" onclick="">
+						<input type="submit" class="btn btn-info" value="Guardar cambios" onclick="">
 				</form>
-				Rol
-	<input type="text" name="rol" value="<?=$usuario->rol?>" disabled="true" />
-	<a href="<?php base_url()?>usuario/mejorar"><button type="button" name="mejorar">Mejorar rol</button></a>
 			</div>
 				
 
