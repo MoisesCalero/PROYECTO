@@ -23,7 +23,14 @@
     left: 138%;
     transform: translatex(-50%);
     }
-
+    .pulsable button{
+    background:none;
+    border:0;
+    text-align: center;
+    color: white;
+    width: 100%;
+    height: 100%;
+    }
     .principal, .secundaria{
         width: 78%;
         height: auto;
@@ -61,6 +68,11 @@
 
 .footer-classic a, .footer-classic a:focus, .footer-classic a:active {
     color: #ffffff;
+}
+footer{
+	width: 100%;
+	position: absolute;
+	bottom 0;
 }
 .nav-list li {
     padding-top: 5px;
