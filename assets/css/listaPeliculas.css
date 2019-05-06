@@ -32,3 +32,53 @@ body{
 	.btn-admin{
 	background-color: red;
 	}
+	.contenedor{
+		background-color: #fdffee;
+		border-radius:5px;
+		margin-top: 30px;
+		margin-bottom: 100px;
+		margin-left: 120px;
+		margin-right: 120px;
+		padding: 15px;
+		height: 80%;
+    }
+    #fotoPerf{
+    	float:right;
+    	position:relative;
+    	margin-right: 30px;
+    	margin-top: 10px;
+    	border:7px solid black;
+    	border-radius: 50%;
+    }
+    .card{
+    	display: inline-block;
+    	margin:15px; 
+    }
+    .completada{
+    	width: 15px;
+    	height: 15px;
+    	border-radius: 50%;
+    	background-color:#5cb85c;
+    	display: inline-block;
+    }
+    .pausa{
+    	width: 15px;
+    	height: 15px;
+    	border-radius: 50%;
+    	background-color:#ffc107  ;
+    	display: inline-block;
+    }
+    .dejada{
+    	width: 15px;
+    	height: 15px;
+    	border-radius: 50%;
+    	background-color:#d9534f;
+    	display: inline-block;
+    }
+    .futuro{
+    	width: 15px;
+    	height: 15px;
+    	border-radius: 50%;
+    	background-color:#428bca;
+    	display: inline-block;
+    }
