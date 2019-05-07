@@ -28,7 +28,7 @@
 			  <div class="card-body">
 			    <h5 class="card-title"><?=$libro->nombre ?></h5>
 			    <p class="card-text"><?= $libro->descripcion?></p>
-			    <?php if(isset($_SESSION['rol']) && $_SESSION['rol']=="administrador"): ?>
+			    <?php if(isset($_SESSION['rol']) && isset($_SESSION['rol']) && $_SESSION['rol']=="administrador"): ?>
 			    <form action="<?=base_url()?>libro/update" method="post">
 			    <input type="hidden" name="id" value="<?=$libro->id ?>"/>
    			    <input type="submit" class="btn btn-primary btn-admin" value="Editar este libro"/>

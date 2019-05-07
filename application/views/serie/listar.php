@@ -29,7 +29,7 @@
 			  <div class="card-body">
 			    <h5 class="card-title"><?=$serie->nombre ?></h5>
 			    <p class="card-text"><?= $serie->descripcion?></p>
-			    <?php if($_SESSION['rol']=="administrador"): ?>
+			    <?php if(isset($_SESSION['rol']) && $_SESSION['rol']=="administrador"): ?>
 			    <form action="<?=base_url()?>pelicula/update" method="post">
 			    <input type="hidden" name="id" value="<?=$serie->id ?>"/>
    			    <input type="submit" class="btn btn-primary btn-admin" value="Editar esta película"/>
