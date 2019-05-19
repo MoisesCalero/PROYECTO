@@ -99,7 +99,6 @@ class Usuario extends CI_Controller
     {
         $correo_nuevo = isset($_POST['correo']) && ! empty($_POST['correo']) ? $_POST['correo'] : null;
         $nombreUsuario_nuevo = isset($_POST['nombreUsuario']) && ! empty($_POST['nombreUsuario']) ? $_POST['nombreUsuario'] : null;
-        $clave_nuevo = isset($_POST['clave']) && ! empty($_POST['clave']) ? $_POST['clave'] : null;
         $nombre_nuevo = isset($_POST['nombre']) && ! empty($_POST['nombre']) ? $_POST['nombre'] : null;
         $apellidos_nuevo = isset($_POST['apellidos']) && ! empty($_POST['apellidos']) ? $_POST['apellidos'] : null;
         $descripcion_nuevo = isset($_POST['descripcion']) && ! empty($_POST['descripcion']) ? $_POST['descripcion'] : null;
@@ -108,9 +107,9 @@ class Usuario extends CI_Controller
 
         $id = isset($_POST['id']) && ! empty($_POST['id']) ? $_POST['id'] : null;
 
-        if ($correo_nuevo != null && $nombreUsuario_nuevo != null && $clave_nuevo != null) {
+        if ($correo_nuevo != null && $nombreUsuario_nuevo != null) {
             $this->load->model('usuario_model');
-            $ok = $this->usuario_model->update($id, $correo_nuevo, $nombreUsuario_nuevo, $clave_nuevo, $nombre_nuevo, $apellidos_nuevo, $descripcion_nuevo, $fnac_nuevo, $rol_nuevo);
+            $ok = $this->usuario_model->update($id, $correo_nuevo, $nombreUsuario_nuevo, $nombre_nuevo, $apellidos_nuevo, $descripcion_nuevo, $fnac_nuevo, $rol_nuevo);
             if ($ok) {
                 session_start();
                 $_SESSION['usuario'] = $nombreUsuario_nuevo;
@@ -171,6 +170,13 @@ class Usuario extends CI_Controller
             $data['usuario'] = $this->usuario_model->mejorarCuenta($id);
             frame($this, 'home/presentacion', $data);
         }
+    }
+    public function listarTodo(){
+        $this->load->model('usuario_model');
+        $usuarios = $this->usuario_model->listar();
+        $data=[];
+        $data['usuarios'] = $usuarios;
+        frame($this, 'usuario/listarTodo', $data);
     }
 }
 

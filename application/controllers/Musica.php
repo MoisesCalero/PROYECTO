@@ -5,7 +5,13 @@ class Musica extends CI_Controller
     
     public function crear()
     {
-        frame($this, 'musica/crear');
+        $id=isset($_POST['id']) && ! empty($_POST['id']) ? $_POST['id'] : null;
+        $data=[];
+        if($id!=null){
+            $this->load->model('usuario_model');
+            $data['usuario'] = $this->usuario_model->getUsuarioById($id);
+        }
+        frame($this, 'musica/crear', $data);
     }
     public function crearPost()
     {
