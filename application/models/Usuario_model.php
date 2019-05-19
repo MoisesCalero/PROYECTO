@@ -42,7 +42,7 @@ class Usuario_model extends CI_Model
         ]);
     }
 
-    public function update($id, $correo_nuevo, $nombreUsuario_nuevo, $clave_nuevo, $nombre_nuevo, $apellidos_nuevo, $descripcion_nuevo, $fnac_nuevo, $rol_nuevo)
+    public function update($id, $correo_nuevo, $nombreUsuario_nuevo, $nombre_nuevo, $apellidos_nuevo, $descripcion_nuevo, $fnac_nuevo, $rol_nuevo)
     {
         $ok = false;
 
@@ -55,7 +55,6 @@ class Usuario_model extends CI_Model
             $usuario = R::load('usuario', $id);
             $usuario->correo = $correo_nuevo;
             $usuario->nombreUsuario = $nombreUsuario_nuevo;
-            $usuario->clave = $clave_nuevo;
             $usuario->nombre = $nombre_nuevo;
             $usuario->apellidos = $apellidos_nuevo;
             $usuario->descripcion = $descripcion_nuevo;
@@ -76,5 +75,9 @@ class Usuario_model extends CI_Model
         $usuario=R::load('usuario', $id);
         $usuario->rol="premium";
         R::store($usuario);
+    }
+    
+    public function listar() {
+        return R::findAll('usuario');
     }
 }
