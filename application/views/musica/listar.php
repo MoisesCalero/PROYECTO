@@ -1,4 +1,12 @@
 <h2>Lista de música</h2>
+<?php
+if(isset($_SESSION['rol']) && $_SESSION['rol']=="premium"):
+?>
+<form action="<?=base_url()?>musica/crear" method="post">
+<input type="hidden" name="id" value=<?=$_SESSION['id']?>"/>
+<input type="submit" class="btn btn-primary" value="Subir tu propia música"/>
+</form>
+<?php endif;?>
 		<?php foreach ($musicas as $musica): ?>
 			<div class="card" style="width: 18rem;">
 	  			<img class="card-img-top" src="<?=base_url() ?>assets/img/logo.png" alt="cartel">

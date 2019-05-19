@@ -13,12 +13,6 @@
 							<input type="text" class="form-control form-control-sm" name="nombreUsuario" required value="<?=$usuario->nombreUsuario?>">
 											
 							
-							<label><span>*</span>Contraseña:</label>
-							<input type="password" class="form-control form-control-sm" name="clave" required value="<?=$usuario->clave?>">
-
-							<label><span>*</span>Confirmar Contraseña:</label>
-							<input type="password" class="form-control form-control-sm" name="claveRepe" required>
-							
 							<label>Nombre:</label>
 							<input type="text" class="form-control form-control-sm" name="nombre" value="<?=$usuario->nombre?>">
 

@@ -22,6 +22,14 @@
 	  </a>
 	</div>
 </div> -->
+<?php
+if(isset($_SESSION['rol']) && $_SESSION['rol']=="premium"):
+?>
+<form action="<?=base_url()?>libro/crear" method="post">
+<input type="hidden" name="id" value=<?=$_SESSION['id']?>"/>
+<input type="submit" class="btn btn-primary" value="Subir tu propio libro"/>
+</form>
+<?php endif;?>
 		<?php foreach ($libros as $libro): ?>
 			<div class="card" style="width: 18rem;">
 	  			<img class="card-img-top" src="<?=base_url() ?>assets/img/logo.png" alt="cartel">

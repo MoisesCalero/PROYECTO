@@ -10,8 +10,8 @@
 						<label><span>*</span>Nombre:</label>
 							<input type="text" class="form-control" name="nombre" required>
 						
-							<label><span>*</span>Grupo:</label>
-							<input type="text" class="form-control form-control-sm" name="grupo" required>
+							<label><span>*</span>Grupo/autor:</label>
+							<input type="text" class="form-control form-control-sm" name="grupo" <?php if(isset($usuario)):?>value="<?=$usuario->nombreUsuario?>" <?php endif;?> required>
 											
 							<label>Álbum:</label>
 							<input type="text" class="form-control form-control-sm" name="album" >

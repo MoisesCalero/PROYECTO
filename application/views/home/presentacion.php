@@ -6,6 +6,7 @@
         <h1>HOLA</h1>
         <h1>HOLA</h1>
     </div>
+    <?php if(!isset($_SESSION['rol'])||isset($_SESSION['rol'])&& $_SESSION['rol']!="premium"):?>
     <div class="anuncios">
         <h1>ANUNCIOS</h1>
         <h1>ANUNCIOS</h1>
@@ -22,7 +23,7 @@
         <h1>ANUNCIOS</h1>
 
     </div>
-
+<?php endif;?>
 
      <div class="secundaria" style="margin-top: 20px;" id="tabs">
         <ul>

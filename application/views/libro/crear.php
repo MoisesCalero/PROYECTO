@@ -20,7 +20,7 @@
 							<input type="text" class="form-control form-control-sm" name="numero_paginas" required>
 							
 							<label>Autor:</label>
-							<input type="text" class="form-control form-control-sm" name="autor" >
+							<input type="text" class="form-control form-control-sm" name="autor"  <?php if(isset($usuario)):?>value="<?=$usuario->nombreUsuario?>" <?php endif;?> >
 							
 							<label>Editorial:</label>
 							<input type="text" class="form-control form-control-sm" name="editorial" >
