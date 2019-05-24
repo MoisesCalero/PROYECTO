@@ -112,6 +112,13 @@ class Pelicula extends CI_Controller
             // Mensaje ERROR
         }
     }
+    public function cambiaEstado(){
+        $estado=$_POST['estado'];
+        $usuario=$_POST['usuario'];
+        $pelicula=$_POST['peli'];
+        $this->load->model('pelicula_model');
+        $ok=$this->pelicula_model->cambiarEstado($estado, $usuario, $pelicula);
+    }
 }
 
 ?>

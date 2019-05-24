@@ -105,6 +105,22 @@ class Libro extends CI_Controller
             header("location: ../libro/listar");
         }
     }
+    public function crearComentario(){
+        $idUsu=isset($_POST['idUsuario']) && ! empty($_POST['idUsuario']) ? $_POST['idUsuario'] : null;
+        $idLibro=isset($_POST['idLibro']) && ! empty($_POST['idLibro']) ? $_POST['idLibro'] : null;
+        $comentario=isset($_POST['comentario']) && ! empty($_POST['comentario']) ? $_POST['comentario'] : null;
+        if ($idUsu!=null && $idLibro!=null && $comentario !=null) {
+            $this->load->model('libro_model');
+            $ok = $this->libro_model->crearComentario($idUsu, $idLibro, $comentario);
+            if ($ok) {
+                redirect(base_url() . 'home/presentacion');
+            } else {
+                frame($this, 'home/presentacion');
+            }
+        } else {
+            // Mensaje ERROR
+        }
+    }
 }
 
 ?>

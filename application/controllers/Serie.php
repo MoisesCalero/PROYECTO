@@ -100,6 +100,22 @@ class Serie extends CI_Controller
             header("location: ../serie/listar");
         }
     }
+    public function crearComentario(){
+        $idUsu=isset($_POST['idUsuario']) && ! empty($_POST['idUsuario']) ? $_POST['idUsuario'] : null;
+        $idSerie=isset($_POST['idSerie']) && ! empty($_POST['idSerie']) ? $_POST['idSerie'] : null;
+        $comentario=isset($_POST['comentario']) && ! empty($_POST['comentario']) ? $_POST['comentario'] : null;
+        if ($idUsu!=null && $idSerie!=null && $comentario !=null) {
+            $this->load->model('serie_model');
+            $ok = $this->serie_model->crearComentario($idUsu, $idSerie, $comentario);
+            if ($ok) {
+                redirect(base_url() . 'home/presentacion');
+            } else {
+                frame($this, 'home/presentacion');
+            }
+        } else {
+            // Mensaje ERROR
+        }
+    }
 }
 
 ?>

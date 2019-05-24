@@ -104,6 +104,22 @@ class Musica extends CI_Controller
             header("location: ../musica/listar");
         }
     }
+    public function crearComentario(){
+        $idUsu=isset($_POST['idUsuario']) && ! empty($_POST['idUsuario']) ? $_POST['idUsuario'] : null;
+        $idMusica=isset($_POST['idMusica']) && ! empty($_POST['idMusica']) ? $_POST['idMusica'] : null;
+        $comentario=isset($_POST['comentario']) && ! empty($_POST['comentario']) ? $_POST['comentario'] : null;
+        if ($idUsu!=null && $idMusica!=null && $comentario !=null) {
+            $this->load->model('musica_model');
+            $ok = $this->musica_model->crearComentario($idUsu, $idMusica, $comentario);
+            if ($ok) {
+                redirect(base_url() . 'home/presentacion');
+            } else {
+                frame($this, 'home/presentacion');
+            }
+        } else {
+            // Mensaje ERROR
+        }
+    }
 }
 
 ?>
