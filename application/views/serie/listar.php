@@ -1,3 +1,4 @@
+<link href="<?=base_url()?>assets/css/listaPeliculas.css"/>
 <h2>Lista de series</h2>
 <!--<div class="imagenes">
 	<div id="carousel" class="carousel slide" data-ride="carousel">
@@ -28,79 +29,6 @@
             $("#tabs").tabs();
         });
 </script>
-
-	<style type="text/css">
-
-.tabla{
-	width: 100%;
-	height: auto;
-	background-color: white; 
-	border-radius: 5px;
-}
-
-.principalSerie{
-	width:100%;
-	display: flex;
-	/*border:solid;*/
-}
-.principalSerie_section-1{
-	width:75%;
-	background: #E3E3E3;
-	border-radius:15px;
-	padding:15px;
-	/*background: red;*/
-}
-.principalSerie_section-2{
-	width:25%;
-	background: #E3E3E3;
-	border-left: 8px solid white;
-	border-radius:15px;
-	padding:15px;
-	/*border:solid;*/
-	/*background: blue;*/
-}
-
-.principalSerie_section-2 h4{
-	margin: 30px;
-}
-.principalSerie_section-2 ul li{
-	margin-bottom: 15px;
-	list-style: none;
-}
-
-.dvSerie{
-    margin: 10px;
-}
-
-.imgDvSerie{
-	border:solid;
-    margin: auto;
-    height:210px;
-}
-
-.dvSerie select{
-    margin-top:-95px;
-    margin-left: -43px;
-}
-
-.dvSerie h4{
-    color: black;
-    text-align: center;   
-    height:50px;
-}
-
-
-.containerSeries{
-    display: flex;
-    flex-wrap: wrap;
-    width: 115%;
-}
-
-
-
-
-	</style>
-
 <!--JAVASCRIPT PARA CREAR LOS SELECT-->
 <script type="text/javascript">
     function pintarSelect(){
@@ -122,7 +50,7 @@
 </script>
 
 		
-		<div class="tabla" id="tabs">
+<div class="tabla" id="tabs">
 	<ul>
 		<li><a href="#tabs-1">Todas</a></li>
 		<li><a href="#tabs-2">Siguiendo</a></li>
@@ -148,7 +76,11 @@
 							<img src="<?=base_url()?><?=$serie->ruta_caratula?>" alt="<?=$serie->alt_image?>" width="100%", height="100%"/>
 						</div>
 						<div class="h4DvSerie">
-							<h4><?= $serie->alt_image?></</h4>
+							<h4><?= $serie->nombre?></</h4>
+							<form action="<?=base_url()?>serie/detalles" method="POST">
+							<input type="hidden" name="id" value="<?=$serie->id?>"/>
+							<input type="submit" value="Detalles"/>
+							</form>
 						</div>
 					</div>
 				<?php endforeach;?>

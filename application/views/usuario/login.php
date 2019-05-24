@@ -1,4 +1,5 @@
-	<div class="login-form">
+<link href="<?=base_url()?>assets/css/login.css"/>
+<div class="login-form">
     <form action="<?=base_url()?>usuario/loginPost" method="post">
         <h2 class="text-center"><img src="<?=base_url()?>assets/img/logo.png" alt="logo" width="50px" height="50px">Registrate:</h2>   
         <div class="form-group">
