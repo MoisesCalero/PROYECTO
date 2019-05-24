@@ -1,30 +1,3 @@
-<div class="boton-acciones" style="float:left; display:flex; flex-direction:row;">
-	<form action="<?=base_url()?>usuario/update" method="post">
-		<button class="btn btn-primary">Editar mi cuenta</button>
-		<input type="hidden" name="id" value="<?=$usuario->id ?>" />
-	</form>
-	<form action="<?=base_url()?>usuario/delete" method="post">
-		<input type="hidden" name="id" value="<?=$usuario->id ?>" />
-		<button class="btn btn-primary">Eliminar mi cuenta</button>
-	</form>
-	<form action="<?=base_url()?>usuario/logout" method="post">
-		<button class="btn btn-primary">Cerrar sesión</button>
-		<input type="hidden" name="id" value="<?=$usuario->id ?>" />
-	</form>
-		<form action="<?=base_url()?>usuario/updatePassword" method="post">
-		<button class="btn btn-primary">Cambiar mi contraseña</button>
-		<input type="hidden" name="id" value="<?=$usuario->id ?>" />
-	</form>
-	<?php if(isset($_SESSION['rol']) && $_SESSION['rol']=="administrador"):?>
-		<form action="<?=base_url()?>usuario/listarTodo" method="post">
-		<button class="btn btn-primary">Mostrar una lista de todos los usuarios</button>
-		<input type="hidden" name="id" value="<?=$usuario->id ?>" />
-	</form>
-	<?php endif;?>
-	<?php if(isset($_SESSION['rol']) && $_SESSION['rol']=="basico"):?><form action="<?=base_url()?>usuario/upgrade" method="post">
-		<button class="btn btn-primary">Mejorar mi cuenta</button>
-		<input type="hidden" name="id" value="<?=$usuario->id ?>" /></form><?php endif; ?>
-	</div><br/><br/>
 <h1><b>Perfil de <?=$usuario->nombreUsuario ?>: </b><img src="<?=base_url()?>assets/img/pp.png" alt="foto de perfil" id="fotoPerf" width="150px" height="150px;"></h1><hr>
 		<div>
 			<h2>Información personal:</h2>

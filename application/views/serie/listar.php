@@ -205,10 +205,11 @@
 		<div id="tabs-6">
 			<h1>Recomendaciones</h1>
 		</div>
-
+<!--
 			    <form action="<?=base_url()?>serie/detalles" method="post">
-			    <!-- <input type="hidden" name="id" value="<?=$serie->id ?>"/> -->
+			    <!-- <input type="hidden" name="id" value="<?=$serie->id ?>"/>
    			    <input type="submit" class="btn btn-primary" value="Más información..."/>
 			    </form>
+				-->
 			  </div>
 			</div>

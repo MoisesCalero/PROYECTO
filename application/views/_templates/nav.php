@@ -1,5 +1,7 @@
 <?php
-session_start();
+if(!isset($_SESSION['usuario'])){
+    session_start();
+}
 $nombre;
 $idUsu;
 // if(isset($_SESSION['usuario']))
@@ -13,15 +15,15 @@ $dir = base_url();
 if ($nombre != null) {
     // <li class="pulsable"><a href="{$dir}usuario/listar" id="${nombre}">${nombre}</a></li>;
     $enlace = <<<html
-<li class="pulsable">
+<li class="pulsable" >
 <form action="${dir}usuario/listar" method="post">
 <input type="hidden" name="id" value="${idUsu}"/>
-<button>${nombre}</button>
+<button id="botonTamanio"><span class="usu">${nombre}</span></button>
 </form></li>
 html;
 } else {
     // session_destroy();
-    $enlace = "<li class='pulsable'><a href='{$dir}usuario/login'>Login</a></li>";
+    $enlace = "<li class='pulsable '><a href='{$dir}usuario/login'>Login</a></li>";
 }
 ?>
 <nav class="navbar navbar-default" role="navigation">
@@ -49,7 +51,7 @@ html;
 			</li>
 		
 		</ul>
-		<ul class="nav navbar-nav navbar-right">
+		<ul class="nav navbar-nav navbar-right" id="botonLogin">
             <?=$enlace?>
         </ul>
 	</div>

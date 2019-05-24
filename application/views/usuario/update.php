@@ -1,8 +1,9 @@
+
 	<div class="modal-dialog">
 			<div class="modal-content">
 				<form action="<?=base_url()?>usuario/updatePost" method="POST">
 					<div class="modal-header">						
-						<h4 class="modal-title">Crear Usuario:</h4>
+						<h4 class="modal-title">Actualizar Usuario:</h4>
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
@@ -32,9 +33,9 @@
 
 						</div>
 					</div>
-						<span style="margin-left: 15px;">*</span> Campos obligatiorios
+					<span style="margin-left: 15px;">*</span> Campos obligatiorios
 					
-	<input type="submit" class="btn btn-info" value="Crear" onclick="">
+	<input type="submit" class="btn btn-info" value="Crear" onclick="" >
 	</form>
 			</div>
 			

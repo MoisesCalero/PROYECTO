@@ -1,3 +1,4 @@
+<script src="<?=base_url()?>assets/js/compruebaUsuario.js"></script>
 <div class="modal-dialog">
 	<div class="modal-content">
 		<form action="<?=base_url()?>usuario/crearPost" method="POST">

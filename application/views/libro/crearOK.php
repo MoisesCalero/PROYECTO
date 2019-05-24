@@ -1,3 +1,2 @@
-<h1>Usuario creado correctamente. Bienvenido!</h1>
-<p>Te hemos enviado un correo de bienvenida</p>
-<a href="<?=base_url()?>Usuario/login">Volver al login e iniciar sesión</a>
+<h1>Libro creada correctamente!</h1>
+<a href="<?=base_url()?>libro/listar">Volver</a>

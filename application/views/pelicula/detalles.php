@@ -48,7 +48,7 @@
 		margin-left:85%;
 	}
 	iframe{
-		margin-left:35%;
+		margin-left:17%;
 	}
 	.fav{
 		color:white;
@@ -57,6 +57,13 @@
 		margin-top: 1%;
 		margin-right:1%;
 		float: right;
+	}
+	#comentarios{
+		margin-left:17%;
+		margin-top:5%;
+	}
+	.comentarios{
+		margin-top:3%;
 	}
 </style>
 			<div class="fondo">
@@ -83,7 +90,30 @@
   	  		<p class="text-center"> 
   	  			Trailer:
   	  		</p>
-  	  		<iframe src="https://www.youtube.com/watch?v=vak9ZLfhGnQ" frameborder="0"></iframe>
+  	  		<iframe width="853" height="480" src="https://www.youtube.com/embed/2DRD4xSUbhM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<br/>
+				<div id="comentarios">
+				Añadir un comentario:
+				<form action="<?=base_url()?>pelicula/crearComentario" method="POST">
+				<?php if(isset($_SESSION['id'])):?>
+				<input type="hidden" name="idUsuario" value="<?=$_SESSION['id']?>"/>
+				<?php endif;?>
+				<input type="hidden" name="idPeli" value="<?=$pelicula->id?>"/>
+				<input type="text" name="comentario"/>
+				<input type="submit" name="Publicar"/>
+				</form>
+				<div class="comentarios">
+					<?php foreach ($pelicula->ownComentarioList as $comentario): ?>
+					<form action="<?=base_url()?>usuario/ver" method="POST">
+					<input type="hidden" name="id" value="<?=$comentario->usuario->id?>"/>
+					<input type="submit" id="enlaceBoton" value="<?=$comentario->usuario->nombre_usuario?>"/>
+				</form> ha comentado: <?=$comentario->comentario?><br/>
+					<?php endforeach;?>
+					<!--<?php foreach ($comentarios as $comentario): ?>
+						<?=$comentario->usuario_id?> ha comentado: <?=$comentario->comentario?><br/>
+					<?php endforeach;?>-->
+				</div>
+				</div>
 <script>
 	function cambiarIcono(){
 		//Cambia icono y a�ade a favoritos

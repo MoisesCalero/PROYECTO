@@ -1,10 +1,11 @@
     <div class="principal">
-        <h1>HOLA</h1>
-        <h1>HOLA</h1>
-        <h1>HOLA</h1>
-        <h1>HOLA</h1>
-        <h1>HOLA</h1>
-        <h1>HOLA</h1>
+    <?php if(isset($_SESSION['usuario'])){
+        echo "<h1>¡Bienvenido ".$_SESSION['usuario']."!</h1>";
+    }
+    else{
+        echo "<h1>Bienvenido, inicia sesión o crea tu cuenta para acceder a nuestro contenido</h1>";
+    }
+    ?>
     </div>
     <?php if(!isset($_SESSION['rol'])||isset($_SESSION['rol'])&& $_SESSION['rol']!="premium"):?>
     <div class="anuncios">
