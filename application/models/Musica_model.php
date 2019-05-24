@@ -72,4 +72,16 @@ class Musica_model extends CI_Model
         $musica = R::load('musica', $id);
         R::trash($musica);
     }
+    public function crearComentario($idUsu, $idMusica, $comentario){
+        $usuario=R::load('usuario', $idUsu);
+        $musica=R::load('musica', $idMusica);
+        $coment=R::dispense('comentariomusica');
+        $coment->usuario=$usuario;
+        $coment->pelicula=$musica;
+        $coment->comentario=$comentario;
+        R::store($coment);
+    }
+    public function listarComentariosByMusica($id){
+        return R::findAll('comentariomusica', 'musica_id=?', [$id]);
+    }
 }

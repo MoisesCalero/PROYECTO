@@ -74,4 +74,17 @@ class Libro_model extends CI_Model
         $libro = R::load('libro', $id);
         R::trash($libro);
     }
+    public function crearComentario($idUsu, $idLibro, $comentario){
+        $usuario=R::load('usuario', $idUsu);
+        $libro=R::load('libro', $idLibro);
+        $coment=R::dispense('comentariolibro');
+        $coment->usuario=$usuario;
+        $coment->libro=$libro;
+        $coment->comentario=$comentario;
+        R::store($coment);
+    }
+    public function listarComentariosByLibro($id){
+        return R::findAll('comentariolibro', 'libro_id=?', [$id]);
+    }
+    
 }

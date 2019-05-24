@@ -74,4 +74,16 @@ class Serie_model extends CI_Model
         $serie = R::load('serie', $id);
         R::trash($serie);
     }
+    public function crearComentario($idUsu, $idSerie, $comentario){
+        $usuario=R::load('usuario', $idUsu);
+        $serie=R::load('serie', $idSerie);
+        $coment=R::dispense('comentarioserie');
+        $coment->usuario=$usuario;
+        $coment->serie=$serie;
+        $coment->comentario=$comentario;
+        R::store($coment);
+    }
+    public function listarComentariosBySerie($id){
+        return R::findAll('comentarioserie', 'serie_id=?', [$id]);
+    }
 }

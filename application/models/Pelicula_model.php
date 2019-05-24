@@ -73,13 +73,36 @@ class Pelicula_model extends CI_Model
     public function crearComentario($idUsu, $idPeli, $comentario){
         $usuario=R::load('usuario', $idUsu);
         $pelicula=R::load('pelicula', $idPeli);
-        $coment=R::dispense('comentario');
+        $coment=R::dispense('comentariopelicula');
         $coment->usuario=$usuario;
         $coment->pelicula=$pelicula;
         $coment->comentario=$comentario;
         R::store($coment);
     }
     public function listarComentariosByPelicula($id){
-        return R::findAll('comentario', 'pelicula_id=?', [$id]);
+        return R::findAll('comentariopelicula', 'pelicula_id=?', [$id]);
+    }
+    public function cambiarEstado($estado, $usuario, $pelicula){
+        $ok = false;
+        $bean = R::findOne('estadopelicula', 'pelicula=? and usuario=?', [
+            $pelicula,
+            $usuario
+        ]);
+        $ok = ($bean == null);
+        if($ok){
+            $est=R::dispense('estadopelicula');
+            $est->usuario=$usuario;
+            $est->pelicula=$pelicula;
+            $est->estado=$estado;
+            R::store($est);
+        }
+        else{
+            $est = R::findOne('estadopelicula', 'pelicula=? and usuario=?', [
+                $pelicula,
+                $usuario
+            ]);
+            $est->estado=$estado;
+            R::store($est);
+        }
     }
 }
