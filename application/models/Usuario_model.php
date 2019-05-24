@@ -27,7 +27,22 @@ class Usuario_model extends CI_Model
         }
         return $ok;
     }
+    public function updatePassword($id, $claveNueva)
+    {
+        $ok = false;
+        $bean = R::findOne('usuario', 'id=?', [
+            $id
+        ]);
+        $ok = ($bean != null);
 
+        // R::debug();
+        if ($ok) {
+            $usuario = R::load('usuario', $id);
+            $usuario->clave = $claveNueva;
+            R::store($usuario);
+        }
+        return $ok;
+    }
     public function getUsuarioById($id)
     {
         return R::findOne('usuario', 'id=?', [
