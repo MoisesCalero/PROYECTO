@@ -27,10 +27,27 @@
     background:none;
     border:0;
     text-align: center;
+	
     color: white;
     width: 100%;
     height: 100%;
     }
+	#botonLogin{
+		
+		margin-top:12px!important;
+		margin-right:2px!important;
+		height:20px!important;
+		
+	}
+	#botonTamanio{
+		width: 50px;
+        height: 20px;
+		
+	}
+	.usu{
+		font-size:150%;
+		color:white!important;
+	}
     .principal, .secundaria{
         width: 78%;
         height: auto;
@@ -59,7 +76,6 @@
     }
 
 
-
     /*Parte del footer*/
 
 .context-dark, .bg-gray-dark, .bg-primary {
@@ -72,7 +88,7 @@
 footer{
 	width: 100%;
 	position: absolute;
-	bottom 0;
+	/*bottom 0;*/
 }
 .nav-list li {
     padding-top: 5px;
