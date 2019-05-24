@@ -37,3 +37,4 @@ var peticion_http;
 				document.getElementById("errorClave").innerHTML="Las claves no coinciden";
 			}
 		}
+		

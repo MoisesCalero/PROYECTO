@@ -75,7 +75,12 @@
         background-color: #4660CB;
     }
 
-
+    .carrusel{
+        margin-top:4%;
+        width: 80%;
+        margin-left: 10%;
+        height: 10%;
+    }
     /*Parte del footer*/
 
 .context-dark, .bg-gray-dark, .bg-primary {
