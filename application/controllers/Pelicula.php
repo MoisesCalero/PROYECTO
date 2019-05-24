@@ -25,7 +25,7 @@ class Pelicula extends CI_Controller
             } else {
                 $data['pelicula'] = $nombre;
                 //Redirigir al formulario avisando del error(mejor hacerlo con ajax antes de enviarlo, asi no redirige a nada)
-                frame($this, 'pelicula/crearERROR', $data);
+                frame($this, 'pelicula/crearError', $data);
             }
         } else {
             // Mensaje ERROR
@@ -81,7 +81,7 @@ class Pelicula extends CI_Controller
             if ($ok) {
                 redirect(base_url() . 'pelicula/listar');
             } else {
-                frame($this, 'pelicula/updateERROR');
+                frame($this, 'pelicula/crearError');
             }
         } else {
             // Mensaje ERROR
@@ -94,6 +94,22 @@ class Pelicula extends CI_Controller
             $this->load->model('pelicula_model');
             $this->pelicula_model->delete($id);
             header("location: ../pelicula/listar");
+        }
+    }
+    public function crearComentario(){
+        $idUsu=isset($_POST['idUsuario']) && ! empty($_POST['idUsuario']) ? $_POST['idUsuario'] : null;
+        $idPeli=isset($_POST['idPeli']) && ! empty($_POST['idPeli']) ? $_POST['idPeli'] : null;
+        $comentario=isset($_POST['comentario']) && ! empty($_POST['comentario']) ? $_POST['comentario'] : null;
+        if ($idUsu!=null && $idPeli!=null && $comentario !=null) {
+            $this->load->model('pelicula_model');
+            $ok = $this->pelicula_model->crearComentario($idUsu, $idPeli, $comentario);
+            if ($ok) {
+                redirect(base_url() . 'home/presentacion');
+            } else {
+                frame($this, 'home/presentacion');
+            }
+        } else {
+            // Mensaje ERROR
         }
     }
 }

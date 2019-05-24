@@ -75,11 +75,25 @@ class Usuario extends CI_Controller
         if ($id != null) {
             $data['usuario'] = $this->usuario_model->getUsuarioById($id);
         } else {
-            session_start();
+            if(!isset($_SESSION['usuario'])){
+                session_start();
+            }
             $nombre = $_SESSION['usuario'];
             $data['usuario'] = $this->usuario_model->getUsuarioByNombre($nombre);
         }
         frame($this, 'usuario/listar', $data);
+    }
+    public function ver()
+    {
+        $this->load->model('usuario_model');
+        $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
+        $data = null;
+        // ESTO LISTARA SOLO EL USUARIO ACTIVO,CON SU INFORMACION ����NO TODOS LOS USUARIOS!!!
+        if ($id != null) {
+            $data['usuario'] = $this->usuario_model->getUsuarioById($id);
+        } else {
+        }
+        frame($this, 'usuario/ver', $data);
     }
 
     public function update()
@@ -114,6 +128,38 @@ class Usuario extends CI_Controller
                 session_start();
                 $_SESSION['usuario'] = $nombreUsuario_nuevo;
                 redirect(base_url() . 'home/presentacion');
+            } else {
+                frame($this, 'usuario/updateERROR');
+            }
+        } else {
+            // Mensaje ERROR
+        }
+    }
+    public function updatePassword()
+    {
+        // ------------------CAMBIAR $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
+        $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
+        if ($id != null) {
+            $this->load->model('usuario_model');
+            $data['usuario'] = $this->usuario_model->getUsuarioById($id);
+            frame($this, 'usuario/updatePassword', $data);
+        } else {
+            redirect(base_url());
+        }
+    }
+    public function updatePasswordPost()
+    {
+        $claveAnt = isset($_POST['claveAnt']) && ! empty($_POST['claveAnt']) ? $_POST['claveAnt'] : null;
+        $claveNueva = isset($_POST['claveNueva']) && ! empty($_POST['claveNueva']) ? $_POST['claveNueva'] : null;
+        $claveNuevaRepe = isset($_POST['claveNuevaRepe']) && ! empty($_POST['claveNuevaRepe']) ? $_POST['claveNuevaRepe'] : null;
+        
+        $id = isset($_POST['id']) && ! empty($_POST['id']) ? $_POST['id'] : null;
+
+        if ($claveAnt!=null && $claveNueva!=null) {
+            $this->load->model('usuario_model');
+            $ok = $this->usuario_model->updatePassword($id,$claveNueva);
+            if ($ok) {
+                frame($this, 'usuario/updatePasswordOK');
             } else {
                 frame($this, 'usuario/updateERROR');
             }
