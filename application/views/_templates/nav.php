@@ -1,7 +1,8 @@
 <?php
-if(!isset($_SESSION['usuario'])){
-    session_start();
-}
+	if(session_id() == '' || !isset($_SESSION)) {
+		// session isn't started
+		session_start();
+	}
 $nombre;
 $idUsu;
 // if(isset($_SESSION['usuario']))

@@ -1,13 +1,52 @@
 <link href="<?=base_url()?>assets/css/listaPeliculas.css"/>
 <h2>Lista de música</h2>
-<?php
-if(isset($_SESSION['rol']) && $_SESSION['rol']=="premium"):
-?>
-<form action="<?=base_url()?>musica/crear" method="post">
-<input type="hidden" name="id" value="<?=$_SESSION['id']?>"/>
-<input type="submit" class="btn btn-primary" value="Subir tu propia música"/>
-</form>
-<?php endif;?>
+<!--<div class="imagenes">
+ <div id="carousel" class="carousel slide" data-ride="carousel">
+ 		 <div class="carousel-inner">
+			    <div class="carousel-item active">
+			      <img class="d-block w-100" src="<?=base_url()?>assets/img/bat.jpg" alt="First slide" height="275px;">
+			    </div>
+			    <div class="carousel-item">
+			      <img class="d-block w-100" src="<?=base_url()?>assets/img/res.jpg" alt="Second slide" height="275px;">
+			    </div>
+			    <div class="carousel-item">
+			      <img class="d-block w-100" src="<?=base_url()?>assets/img/bat.jpg" alt="Third slide" height="275px;">
+			    </div>
+ 	 	</div>
+	  <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Anterior</span>
+	  </a>
+	  <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Siguiente</span>
+	  </a>
+	</div>
+</div> -->
+<script type="text/javascript">
+        $(document).ready(function() {
+            $("#tabs").tabs();
+        });
+</script>
+<!--JAVASCRIPT PARA CREAR LOS SELECT-->
+<script type="text/javascript">
+    function pintarSelect(){
+        opciones = ['--', 'Seguir', 'Favorita', 'Pendiente', 'Vista'];
+    
+        for(i = 0; i<document.getElementsByClassName("dvSerie").length; i++){
+            /*CREAMOS EL SELECT*/
+            select = document.createElement("select");
+                select.setAttribute("id", "miSelect" + i);
+                select.setAttribute("style", "position:absolute");
+          	  document.getElementsByClassName("dvSerie")[i].appendChild(select);
+    
+            /*LLENAMOS EL SELECT*/
+            for(var j = 0; j<opciones.length; j++){
+                 document.getElementById("miSelect" + i).options[j] = new Option(opciones[j], opciones[j]);
+            }
+        }
+    } 
+</script>
 <div class="tabla" id="tabs">
 	<ul>
 		<li><a href="#tabs-1">Todas</a></li>
@@ -17,52 +56,43 @@ if(isset($_SESSION['rol']) && $_SESSION['rol']=="premium"):
 		<li><a href="#tabs-5">Vistas</a></li>
 		<li><a href="#tabs-6">Recomendaciones</a></li>
 	</ul>
-
+	<!-- Pestaña de todas las películas -->
 	<div id="tabs-1">
-		<!-- Si quitas la class="principal", se coloca todo(MIRAR) -->
 		<div class="principalSerie">
-		
 			<div class="principalSerie_section-1">
-				<!--
-				<h1>Lista de TODAS las series</h1>
-				<span>Consulta a la BBDD para pintar las series...</span>
-				-->
 				<div class="containerSeries">
-				<?php foreach($musicas as $musica):?>
+					<?php foreach($musicas as $musica):?>
 					<div class="dvSerie" style="width: 15%">
 						<div class="imgDvSerie">
-							<img src="<?=base_url()?><?=$musica->ruta_caratula?>" alt="<?=$musica->alt_image?>" width="100%", height="100%"/>
+							<img src="<?=base_url()?><?=$musica->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
 						</div>
 						<div class="h4DvSerie">
 							<h4><?= $musica->nombre?></</h4>
 							<form action="<?=base_url()?>musica/detalles" method="POST">
-							<input type="hidden" name="id" value="<?=$musica->id?>"/>
-							<input type="submit" value="Detalles"/>
+								<input type="hidden" name="id" value="<?=$musica->id?>"/>
+								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
 							</form>
 						</div>
 					</div>
-				<?php endforeach;?>
+					<?php endforeach;?>
 				</div>
 			</div>
-			<!--FIN SECTION 1-->
-			
+			<!--Parte de la derecha, filtros y ordenación-->
 			<div class="principalSerie_section-2">
-				<h4>Filtrar...</h4>
+				<h2><strong>Filtrar:</strong></h2>
 				<!--GENERO-->
 				<ul>
-					<li>Genero... <br /> <select>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
 							<option>Serie1</option>
 							<option>Serie2</option>
 							<option>Serie3</option>
 	 	 				</select>
 					</li>
 
-					<!--AÑO DE ESTRENO-->
-					<li>Año de estreno...(Slider)<br/></li>
-
 					<!--VALORACIÓN-->
-					<li>Valoración... <br/> 
-						<select>
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
@@ -73,25 +103,214 @@ if(isset($_SESSION['rol']) && $_SESSION['rol']=="premium"):
 				</ul>
 				<!-- SECTION 2 -->
 			</div>
-		<!-- PRINCIPAL -->
+	</div>
+</div>
+		<!-- Pestaña de películas seguidas -->
+<?php if($seguidas!=null):?>
+<div id="tabs-2">
+	<div class="principalSerie">
+		<div class="principalSerie_section-1">
+			<div class="containerSeries">
+				<?php foreach($seguidas as $seguida):?>
+					<div class="dvSerie" style="width: 15%">
+						<div class="imgDvSerie">
+							<img src="<?=base_url()?><?=$seguida->musica->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
+						</div>
+						<div class="h4DvSerie">
+							<h4><?= $seguida->musica->nombre?></</h4>
+							<form action="<?=base_url()?>musica/detalles" method="POST">
+								<input type="hidden" name="id" value="<?=$seguida->musica->id?>"/>
+								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+							</form>
+						</div>
+					</div>
+				<?php endforeach;?>
+			</div>
+		</div>	
+		<!--Parte de la derecha, filtros y ordenación-->
+		<div class="principalSerie_section-2">
+				<h2><strong>Filtrar:</strong></h2>
+				<!--GENERO-->
+				<ul>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>Serie1</option>
+							<option>Serie2</option>
+							<option>Serie3</option>
+	 	 				</select>
+					</li>
+
+					<!--VALORACIÓN-->
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</li>
+				</ul>
+				<!-- SECTION 2 -->
+			</div>
+	</div>
 		</div>
-		<!-- TABS-1 -->
-		</div>
-		
-		
-		
-		<div id="tabs-2">
-			<h1>Siguiendo</h1>
-		</div>
+	<?php endif;?>
+<!-- Pestaña de películas favoritas -->
 		<div id="tabs-3">
-			<h1>Favoritas</h1>
+			<div class="principalSerie">
+			<div class="principalSerie_section-1">
+				<div class="containerSeries">
+				<?php foreach($favoritas as $favorita):?>
+					<div class="dvSerie" style="width: 15%">
+						<div class="imgDvSerie">
+							<img src="<?=base_url()?><?=$favorita->musica->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
+						</div>
+					<div class="h4DvSerie">
+						<h4><?= $favorita->musica->nombre?></</h4>
+						<form action="<?=base_url()?>musica/detalles" method="POST">
+							<input type="hidden" name="id" value="<?=$favorita->musica->id?>"/>
+							<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+						</form>
+					</div>
+				</div>
+				<?php endforeach;?>
+			</div>
 		</div>
-		<div id="tabs-4">
-			<h1>Pendientes</h1>
+		<!--Parte de la derecha, filtros y ordenación-->
+		<div class="principalSerie_section-2">
+				<h2><strong>Filtrar:</strong></h2>
+				<!--GENERO-->
+				<ul>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>Serie1</option>
+							<option>Serie2</option>
+							<option>Serie3</option>
+	 	 				</select>
+					</li>
+
+					<!--VALORACIÓN-->
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</li>
+				</ul>
+				<!-- SECTION 2 -->
+			</div>
+	</div>
+</div>
+<!-- Pestaña de películas pendientes -->
+<div id="tabs-4">
+	<div class="principalSerie">
+		<div class="principalSerie_section-1">
+			<div class="containerSeries">
+				<?php foreach($pendientes as $pendiente):?>
+					<div class="dvSerie" style="width: 15%">
+						<div class="imgDvSerie">
+							<img src="<?=base_url()?><?=$pendiente->musica->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
+						</div>
+						<div class="h4DvSerie">
+							<h4><?= $pendiente->musica->nombre?></</h4>
+							<form action="<?=base_url()?>musica/detalles" method="POST">
+								<input type="hidden" name="id" value="<?=$pendiente->musica->id?>"/>
+								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+							</form>
+						</div>
+					</div>
+				<?php endforeach;?>
+			</div>
 		</div>
-		<div id="tabs-5">
-			<h1>Vistas</h1>
+		<!--Parte de la derecha, filtros y ordenación-->
+		<div class="principalSerie_section-2">
+				<h2><strong>Filtrar:</strong></h2>
+				<!--GENERO-->
+				<ul>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>Serie1</option>
+							<option>Serie2</option>
+							<option>Serie3</option>
+	 	 				</select>
+					</li>
+
+					<!--VALORACIÓN-->
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</li>
+				</ul>
+				<!-- SECTION 2 -->
+			</div>
+	</div>
+</div>
+<!-- Lista de películas vistas -->
+<div id="tabs-5">
+	<div class="principalSerie">	
+		<div class="principalSerie_section-1">
+			<div class="containerSeries">
+				<?php foreach($vistas as $vista):?>
+					<div class="dvSerie" style="width: 15%">
+						<div class="imgDvSerie">
+							<img src="<?=base_url()?><?=$vista->musica->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
+						</div>
+						<div class="h4DvSerie">
+							<h4><?= $vista->musica->nombre?></</h4>
+							<form action="<?=base_url()?>musica/detalles" method="POST">
+								<input type="hidden" name="id" value="<?=$vista->musica->id?>"/>
+								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+							</form>
+						</div>
+					</div>
+				<?php endforeach;?>
 		</div>
+	</div>
+	<!--Parte de la derecha, filtros y ordenación-->
+	<div class="principalSerie_section-2">
+				<h2><strong>Filtrar:</strong></h2>
+				<!--GENERO-->
+				<ul>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>Serie1</option>
+							<option>Serie2</option>
+							<option>Serie3</option>
+	 	 				</select>
+					</li>
+
+					<!--VALORACIÓN-->
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</li>
+				</ul>
+				<!-- SECTION 2 -->
+			</div>
+	</div>
+</div>
 		<div id="tabs-6">
 			<h1>Recomendaciones</h1>
 		</div>
+<!--
+			    <form action="<?=base_url()?>serie/detalles" method="post">
+			    <!-- <input type="hidden" name="id" value="<?=$serie->id ?>"/>
+   			    <input type="submit" class="btn btn-primary" value="Más información..."/>
+			    </form>
+				-->
+			  </div>
+			</div>

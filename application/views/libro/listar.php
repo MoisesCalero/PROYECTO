@@ -23,14 +23,30 @@
 	  </a>
 	</div>
 </div> -->
-<?php
-if(isset($_SESSION['rol']) && $_SESSION['rol']=="premium"):
-?>
-<form action="<?=base_url()?>libro/crear" method="post">
-<input type="hidden" name="id" value="<?=$_SESSION['id']?>"/>
-<input type="submit" class="btn btn-primary" value="Subir tu propio libro"/>
-</form>
-<?php endif;?>
+<script type="text/javascript">
+        $(document).ready(function() {
+            $("#tabs").tabs();
+        });
+</script>
+<!--JAVASCRIPT PARA CREAR LOS SELECT-->
+<script type="text/javascript">
+    function pintarSelect(){
+        opciones = ['--', 'Seguir', 'Favorita', 'Pendiente', 'Vista'];
+    
+        for(i = 0; i<document.getElementsByClassName("dvSerie").length; i++){
+            /*CREAMOS EL SELECT*/
+            select = document.createElement("select");
+                select.setAttribute("id", "miSelect" + i);
+                select.setAttribute("style", "position:absolute");
+          	  document.getElementsByClassName("dvSerie")[i].appendChild(select);
+    
+            /*LLENAMOS EL SELECT*/
+            for(var j = 0; j<opciones.length; j++){
+                 document.getElementById("miSelect" + i).options[j] = new Option(opciones[j], opciones[j]);
+            }
+        }
+    } 
+</script>
 <div class="tabla" id="tabs">
 	<ul>
 		<li><a href="#tabs-1">Todas</a></li>
@@ -40,52 +56,43 @@ if(isset($_SESSION['rol']) && $_SESSION['rol']=="premium"):
 		<li><a href="#tabs-5">Vistas</a></li>
 		<li><a href="#tabs-6">Recomendaciones</a></li>
 	</ul>
-
+	<!-- Pestaña de todas las películas -->
 	<div id="tabs-1">
-		<!-- Si quitas la class="principal", se coloca todo(MIRAR) -->
 		<div class="principalSerie">
-		
 			<div class="principalSerie_section-1">
-				<!--
-				<h1>Lista de TODAS las series</h1>
-				<span>Consulta a la BBDD para pintar las series...</span>
-				-->
 				<div class="containerSeries">
-				<?php foreach($libros as $libro):?>
+					<?php foreach($libros as $libro):?>
 					<div class="dvSerie" style="width: 15%">
 						<div class="imgDvSerie">
-							<img src="<?=base_url()?><?=$libro->ruta_caratula?>" alt="<?=$libro->alt_image?>" width="100%", height="100%"/>
+							<img src="<?=base_url()?><?=$libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
 						</div>
 						<div class="h4DvSerie">
 							<h4><?= $libro->nombre?></</h4>
 							<form action="<?=base_url()?>libro/detalles" method="POST">
-							<input type="hidden" name="id" value="<?=$libro->id?>"/>
-							<input type="submit" value="Detalles"/>
+								<input type="hidden" name="id" value="<?=$libro->id?>"/>
+								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
 							</form>
 						</div>
 					</div>
-				<?php endforeach;?>
+					<?php endforeach;?>
 				</div>
 			</div>
-			<!--FIN SECTION 1-->
-			
+			<!--Parte de la derecha, filtros y ordenación-->
 			<div class="principalSerie_section-2">
-				<h4>Filtrar...</h4>
+				<h2><strong>Filtrar:</strong></h2>
 				<!--GENERO-->
 				<ul>
-					<li>Genero... <br /> <select>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
 							<option>Serie1</option>
 							<option>Serie2</option>
 							<option>Serie3</option>
 	 	 				</select>
 					</li>
 
-					<!--AÑO DE ESTRENO-->
-					<li>Año de estreno...(Slider)<br/></li>
-
 					<!--VALORACIÓN-->
-					<li>Valoración... <br/> 
-						<select>
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
@@ -96,25 +103,214 @@ if(isset($_SESSION['rol']) && $_SESSION['rol']=="premium"):
 				</ul>
 				<!-- SECTION 2 -->
 			</div>
-		<!-- PRINCIPAL -->
+	</div>
+</div>
+		<!-- Pestaña de películas seguidas -->
+<?php if($seguidas!=null):?>
+<div id="tabs-2">
+	<div class="principalSerie">
+		<div class="principalSerie_section-1">
+			<div class="containerSeries">
+				<?php foreach($seguidas as $seguida):?>
+					<div class="dvSerie" style="width: 15%">
+						<div class="imgDvSerie">
+							<img src="<?=base_url()?><?=$seguida->libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
+						</div>
+						<div class="h4DvSerie">
+							<h4><?= $seguida->libro->nombre?></</h4>
+							<form action="<?=base_url()?>libro/detalles" method="POST">
+								<input type="hidden" name="id" value="<?=$seguida->libro->id?>"/>
+								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+							</form>
+						</div>
+					</div>
+				<?php endforeach;?>
+			</div>
+		</div>	
+		<!--Parte de la derecha, filtros y ordenación-->
+		<div class="principalSerie_section-2">
+				<h2><strong>Filtrar:</strong></h2>
+				<!--GENERO-->
+				<ul>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>Serie1</option>
+							<option>Serie2</option>
+							<option>Serie3</option>
+	 	 				</select>
+					</li>
+
+					<!--VALORACIÓN-->
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</li>
+				</ul>
+				<!-- SECTION 2 -->
+			</div>
+	</div>
 		</div>
-		<!-- TABS-1 -->
-		</div>
-		
-		
-		
-		<div id="tabs-2">
-			<h1>Siguiendo</h1>
-		</div>
+	<?php endif;?>
+<!-- Pestaña de películas favoritas -->
 		<div id="tabs-3">
-			<h1>Favoritas</h1>
+			<div class="principalSerie">
+			<div class="principalSerie_section-1">
+				<div class="containerSeries">
+				<?php foreach($favoritas as $favorita):?>
+					<div class="dvSerie" style="width: 15%">
+						<div class="imgDvSerie">
+							<img src="<?=base_url()?><?=$favorita->libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
+						</div>
+					<div class="h4DvSerie">
+						<h4><?= $favorita->libro->nombre?></</h4>
+						<form action="<?=base_url()?>libro/detalles" method="POST">
+							<input type="hidden" name="id" value="<?=$favorita->libro->id?>"/>
+							<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+						</form>
+					</div>
+				</div>
+				<?php endforeach;?>
+			</div>
 		</div>
-		<div id="tabs-4">
-			<h1>Pendientes</h1>
+		<!--Parte de la derecha, filtros y ordenación-->
+		<div class="principalSerie_section-2">
+				<h2><strong>Filtrar:</strong></h2>
+				<!--GENERO-->
+				<ul>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>Serie1</option>
+							<option>Serie2</option>
+							<option>Serie3</option>
+	 	 				</select>
+					</li>
+
+					<!--VALORACIÓN-->
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</li>
+				</ul>
+				<!-- SECTION 2 -->
+			</div>
+	</div>
+</div>
+<!-- Pestaña de películas pendientes -->
+<div id="tabs-4">
+	<div class="principalSerie">
+		<div class="principalSerie_section-1">
+			<div class="containerSeries">
+				<?php foreach($pendientes as $pendiente):?>
+					<div class="dvSerie" style="width: 15%">
+						<div class="imgDvSerie">
+							<img src="<?=base_url()?><?=$pendiente->libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
+						</div>
+						<div class="h4DvSerie">
+							<h4><?= $pendiente->libro->nombre?></</h4>
+							<form action="<?=base_url()?>pelicula/detalles" method="POST">
+								<input type="hidden" name="id" value="<?=$pendiente->libro->id?>"/>
+								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+							</form>
+						</div>
+					</div>
+				<?php endforeach;?>
+			</div>
 		</div>
-		<div id="tabs-5">
-			<h1>Vistas</h1>
+		<!--Parte de la derecha, filtros y ordenación-->
+		<div class="principalSerie_section-2">
+				<h2><strong>Filtrar:</strong></h2>
+				<!--GENERO-->
+				<ul>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>Serie1</option>
+							<option>Serie2</option>
+							<option>Serie3</option>
+	 	 				</select>
+					</li>
+
+					<!--VALORACIÓN-->
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</li>
+				</ul>
+				<!-- SECTION 2 -->
+			</div>
+	</div>
+</div>
+<!-- Lista de películas vistas -->
+<div id="tabs-5">
+	<div class="principalSerie">	
+		<div class="principalSerie_section-1">
+			<div class="containerSeries">
+				<?php foreach($vistas as $vista):?>
+					<div class="dvSerie" style="width: 15%">
+						<div class="imgDvSerie">
+							<img src="<?=base_url()?><?=$vista->libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
+						</div>
+						<div class="h4DvSerie">
+							<h4><?= $vista->libro->nombre?></</h4>
+							<form action="<?=base_url()?>libro/detalles" method="POST">
+								<input type="hidden" name="id" value="<?=$vista->libro->id?>"/>
+								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+							</form>
+						</div>
+					</div>
+				<?php endforeach;?>
 		</div>
+	</div>
+	<!--Parte de la derecha, filtros y ordenación-->
+	<div class="principalSerie_section-2">
+				<h2><strong>Filtrar:</strong></h2>
+				<!--GENERO-->
+				<ul>
+					<li><strong><h4>Filtrar por Genero:</h4> </strong>
+					<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>Serie1</option>
+							<option>Serie2</option>
+							<option>Serie3</option>
+	 	 				</select>
+					</li>
+
+					<!--VALORACIÓN-->
+					<li><strong><h4>Valoración:</h4> </strong>
+						<select class="form-control" style="width:55%; margin-left:15%;">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</li>
+				</ul>
+				<!-- SECTION 2 -->
+			</div>
+	</div>
+</div>
 		<div id="tabs-6">
 			<h1>Recomendaciones</h1>
 		</div>
+<!--
+			    <form action="<?=base_url()?>serie/detalles" method="post">
+			    <!-- <input type="hidden" name="id" value="<?=$serie->id ?>"/>
+   			    <input type="submit" class="btn btn-primary" value="Más información..."/>
+			    </form>
+				-->
+			  </div>
+			</div>
