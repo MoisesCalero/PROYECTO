@@ -72,16 +72,133 @@ class Musica_model extends CI_Model
         $musica = R::load('musica', $id);
         R::trash($musica);
     }
-    public function crearComentario($idUsu, $idMusica, $comentario){
-        $usuario=R::load('usuario', $idUsu);
-        $musica=R::load('musica', $idMusica);
-        $coment=R::dispense('comentariomusica');
-        $coment->usuario=$usuario;
-        $coment->pelicula=$musica;
-        $coment->comentario=$comentario;
-        R::store($coment);
+//Añadir un comentario a una película
+public function crearComentario($idUsu, $idMusica, $comentario){
+    $usuario=R::load('usuario', $idUsu);
+    $musica=R::load('musica', $idMusica);
+    $coment=R::dispense('musicacomentario');
+    $coment->usuario=$usuario;
+    $coment->musica=$musica;
+    $coment->comentario=$comentario;
+    $ok= R::store($coment);
+    return $ok;
+}
+//Listar los comentarios de una película
+public function listarComentariosByMusica($id){
+    return R::findAll('musicacomentario', 'musica_id=?', [$id]);
+}
+//Cambiar el estado de una película
+public function cambiarEstado($estado, $usuario, $musica){
+    $ok = false;
+    $bean = R::findOne('musicaestado', 'musica_id=? and usuario_id=?', [
+        $musica,
+        $usuario
+    ]);
+    $ok = ($bean == null);
+    if($ok){
+        $est=R::dispense('musicaestado');
+        $est->usuario=R::load('usuario', $usuario);
+        $est->musica=R::load('musica', $musica);
+        $est->estado=$estado;
+        R::store($est);
     }
-    public function listarComentariosByMusica($id){
-        return R::findAll('comentariomusica', 'musica_id=?', [$id]);
+    else{
+        $est = R::findOne('musicaestado', 'musica_id=? and usuario_id=?', [
+            $musica,
+            $usuario
+        ]);
+        $est->estado=$estado;
+        R::store($est);
     }
+}
+//Añadir una película a favoritos
+public function Favorito($usuario, $musica){
+    $ok = false;
+    $bean = R::findOne('musicafavorito', 'musica_id=? and usuario_id=?', [
+        $musica,
+        $usuario
+    ]);
+    $ok = ($bean == null);
+    if($ok){
+        $est=R::dispense('musicafavorito');
+        $est->usuario=R::load('usuario', $usuario);
+        $est->musica=R::load('musica', $musica);
+        R::store($est);
+    }
+    else{
+        $est = R::findOne('musicafavorito', 'musica_id=? and usuario_id=?', [
+            $musica,
+            $usuario
+        ]);
+        R::trash($est);
+    }
+}
+//Añadir una valoración de un usuario a una película
+public function cambiarValoracion($valor, $usuario, $musica){
+    $ok = false;
+    $bean = R::findOne('musicavaloracion', 'musica_id=? and usuario_id=?', [
+        $musica,
+        $usuario
+    ]);
+    $ok = ($bean == null);
+    if($ok){
+        $est=R::dispense('musicavaloracion');
+        $est->usuario=R::load('usuario', $usuario);
+        $est->musica=R::load('musica', $musica);
+        $est->valor=$valor;
+        R::store($est);
+    }
+    else{
+        $est = R::findOne('musicavaloracion', 'musica_id=? and usuario_id=?', [
+            $musica,
+            $usuario
+        ]);
+        $est->valor=$valor;
+        R::store($est);
+    }
+}
+//Cargar las películas a partir de un estado
+public function getMusicasEstado($estado, $id){
+    return R::findAll('musicaestado', 'estado=? and usuario_id=?', [$estado, $id]);
+}
+//Cargas las películas favoritas de un usuario
+public function getMusicasFavoritas($id){
+    return R::findAll('musicafavorito', 'usuario_id=?', [$id]);
+}
+//Cargas el estado de favorito de una película de un usuario
+public function cargaFavorito($usuario, $musica){
+    $ok=false;
+    $bean= R::findAll('musicafavorito', 'usuario_id=? and musica_id=?', [$usuario, $musica]);
+    $ok=$bean!=null;
+    if($ok){
+        return "Encontrado";
+    }
+    else{
+        return "No encontrado";
+    }
+}
+//Cargar el estado de una película de un usuario
+public function cargaEstado($usuario, $musica){
+    $ok=false;
+    $bean= R::findOne('musicaestado', 'usuario_id=? and musica_id=?', [$usuario, $musica]);
+    $ok=$bean!=null;
+    if($ok){
+        return $bean->estado;
+    }
+    else{
+        return "nada";
+    }
+}
+//Cargar la valoración de una película de un usuario
+public function cargaValoracion($usuario, $musica){
+    $ok=false;
+    $bean= R::findOne('musicavaloracion', 'usuario_id=? and musica_id=?', [$usuario, $musica]);
+    $ok=$bean!=null;
+    if($ok){
+        return $bean->valor;
+    }
+    else{
+        return "nada";
+    }
+}
 }
