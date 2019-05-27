@@ -37,10 +37,18 @@ class Serie extends CI_Controller
     public function listar()
     {
         $this->load->model('serie_model');
-       $data=null;
-        //ESTO LISTARA SOLO EL USUARIO ACTIVO,CON SU INFORMACION ����NO TODOS LOS USUARIOS!!!
-       
-            $data['series'] = $this->serie_model->listar();
+        $data=null;
+        $data['seguidas']=null;
+        $data['pendientes']=null;
+        $data['vistas']=null;
+        $data['series'] = $this->serie_model->listar();
+        session_start();
+        if(isset($_SESSION['id'])){
+            $data['seguidas']=$this->serie_model->getSeriesEstado('seguir', $_SESSION['id']);
+             $data['pendientes']=$this->serie_model->getSeriesEstado('viendo', $_SESSION['id']);
+             $data['vistas']=$this->serie_model->getSeriesEstado('terminada', $_SESSION['id']);
+             $data['favoritas']=$this->serie_model->getSeriesFavoritas($_SESSION['id']);
+         }
             frame($this, 'serie/listar', $data);
     }
     public function detalles(){
@@ -101,20 +109,67 @@ class Serie extends CI_Controller
         }
     }
     public function crearComentario(){
-        $idUsu=isset($_POST['idUsuario']) && ! empty($_POST['idUsuario']) ? $_POST['idUsuario'] : null;
-        $idSerie=isset($_POST['idSerie']) && ! empty($_POST['idSerie']) ? $_POST['idSerie'] : null;
-        $comentario=isset($_POST['comentario']) && ! empty($_POST['comentario']) ? $_POST['comentario'] : null;
-        if ($idUsu!=null && $idSerie!=null && $comentario !=null) {
+        $usuario=$_REQUEST['usuario'];
+        $serie=$_REQUEST['serie'];
+        $comentario=$_REQUEST['comentario'];
+        if ($usuario!=null && $serie!=null && $comentario !=null) {
             $this->load->model('serie_model');
-            $ok = $this->serie_model->crearComentario($idUsu, $idSerie, $comentario);
-            if ($ok) {
-                redirect(base_url() . 'home/presentacion');
+            $ok = $this->serie_model->crearComentario($usuario, $serie, $comentario);
+            if (!$ok) {
+                echo "Error, estaria bien que esto llevara a una redirección de error o un alert";
             } else {
-                frame($this, 'home/presentacion');
+                
             }
         } else {
             // Mensaje ERROR
         }
+    }
+    //Cambiar el estado de la película
+    public function cambiaEstado(){
+        $estado=$_POST['estado'];
+        $usuario=$_POST['usuario'];
+        $serie=$_POST['serie'];
+        $this->load->model('serie_model');
+        $ok=$this->serie_model->cambiarEstado($estado, $usuario, $serie);
+    }
+    //Añadir película a favoritos
+    public function Favoritos(){
+        $usuario=$_POST['usuario'];
+        $serie=$_POST['serie'];
+        $this->load->model('serie_model');
+        $ok=$this->serie_model->Favorito($usuario, $serie);
+    }
+    //Cambiar la valoración de una película
+    public function cambiaValoracion(){
+        $valor=$_POST['valoracion'];
+        $usuario=$_POST['usuario'];
+        $serie=$_POST['serie'];
+        $this->load->model('serie_model');
+        $ok=$this->serie_model->cambiarValoracion($valor, $usuario, $serie);
+    }
+    //Cargar los favoritos de un usuario al acceder a una película en concreto
+    public function cargaFavoritos(){
+        $usuario=$_REQUEST['usuario'];
+        $serie=$_REQUEST['serie'];
+        $this->load->model('serie_model');
+        $ok=$this->serie_model->cargaFavorito($usuario, $serie);
+        echo $ok;
+    }
+    //Cargar el estado de una película al entrar
+    public function cargaEstado(){
+        $usuario=$_REQUEST['usuario'];
+        $serie=$_REQUEST['serie'];
+        $this->load->model('serie_model');
+        $ok=$this->serie_model->cargaEstado($usuario, $serie);
+        echo $ok;
+    }
+    //Cargar la valoración de una película al entrar
+    public function cargaValoracion(){
+        $usuario=$_REQUEST['usuario'];
+        $serie=$_REQUEST['serie'];
+        $this->load->model('serie_model');
+        $ok=$this->serie_model->cargaValoracion($usuario, $serie);
+        echo $ok;
     }
 }
 

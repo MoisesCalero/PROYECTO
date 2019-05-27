@@ -42,10 +42,18 @@ class Libro extends CI_Controller
     public function listar()
     {
         $this->load->model('libro_model');
-       $data=null;
-        //ESTO LISTARA SOLO EL USUARIO ACTIVO,CON SU INFORMACION ����NO TODOS LOS USUARIOS!!!
-       
-            $data['libros'] = $this->libro_model->listar();
+        $data=null;
+        $data['seguidas']=null;
+        $data['pendientes']=null;
+        $data['vistas']=null;
+        $data['libros'] = $this->libro_model->listar();
+        session_start();
+        if(isset($_SESSION['id'])){
+            $data['seguidas']=$this->libro_model->getLibrosEstado('seguir', $_SESSION['id']);
+             $data['pendientes']=$this->libro_model->getLibrosEstado('viendo', $_SESSION['id']);
+             $data['vistas']=$this->libro_model->getLibrosEstado('terminada', $_SESSION['id']);
+             $data['favoritas']=$this->libro_model->getLibrosFavoritos($_SESSION['id']);
+         }
             frame($this, 'libro/listar', $data);
     }
     public function detalles(){
@@ -106,20 +114,67 @@ class Libro extends CI_Controller
         }
     }
     public function crearComentario(){
-        $idUsu=isset($_POST['idUsuario']) && ! empty($_POST['idUsuario']) ? $_POST['idUsuario'] : null;
-        $idLibro=isset($_POST['idLibro']) && ! empty($_POST['idLibro']) ? $_POST['idLibro'] : null;
-        $comentario=isset($_POST['comentario']) && ! empty($_POST['comentario']) ? $_POST['comentario'] : null;
-        if ($idUsu!=null && $idLibro!=null && $comentario !=null) {
+        $usuario=$_REQUEST['usuario'];
+        $libro=$_REQUEST['libro'];
+        $comentario=$_REQUEST['comentario'];
+        if ($usuario!=null && $libro!=null && $comentario !=null) {
             $this->load->model('libro_model');
-            $ok = $this->libro_model->crearComentario($idUsu, $idLibro, $comentario);
-            if ($ok) {
-                redirect(base_url() . 'home/presentacion');
+            $ok = $this->libro_model->crearComentario($usuario, $libro, $comentario);
+            if (!$ok) {
+                echo "Error, estaria bien que esto llevara a una redirección de error o un alert";
             } else {
-                frame($this, 'home/presentacion');
+                
             }
         } else {
             // Mensaje ERROR
         }
+    }
+    //Cambiar el estado de la película
+    public function cambiaEstado(){
+        $estado=$_POST['estado'];
+        $usuario=$_POST['usuario'];
+        $libro=$_POST['libro'];
+        $this->load->model('libro_model');
+        $ok=$this->libro_model->cambiarEstado($estado, $usuario, $libro);
+    }
+    //Añadir película a favoritos
+    public function Favoritos(){
+        $usuario=$_POST['usuario'];
+        $libro=$_POST['libro'];
+        $this->load->model('libro_model');
+        $ok=$this->libro_model->Favorito($usuario, $libro);
+    }
+    //Cambiar la valoración de una película
+    public function cambiaValoracion(){
+        $valor=$_POST['valoracion'];
+        $usuario=$_POST['usuario'];
+        $libro=$_POST['libro'];
+        $this->load->model('libro_model');
+        $ok=$this->libro_model->cambiarValoracion($valor, $usuario, $libro);
+    }
+    //Cargar los favoritos de un usuario al acceder a una película en concreto
+    public function cargaFavoritos(){
+        $usuario=$_REQUEST['usuario'];
+        $libro=$_REQUEST['libro'];
+        $this->load->model('libro_model');
+        $ok=$this->libro_model->cargaFavorito($usuario, $libro);
+        echo $ok;
+    }
+    //Cargar el estado de una película al entrar
+    public function cargaEstado(){
+        $usuario=$_REQUEST['usuario'];
+        $libro=$_REQUEST['libro'];
+        $this->load->model('libro_model');
+        $ok=$this->libro_model->cargaEstado($usuario, $libro);
+        echo $ok;
+    }
+    //Cargar la valoración de una película al entrar
+    public function cargaValoracion(){
+        $usuario=$_REQUEST['usuario'];
+        $libro=$_REQUEST['libro'];
+        $this->load->model('libro_model');
+        $ok=$this->libro_model->cargaValoracion($usuario, $libro);
+        echo $ok;
     }
 }
 
