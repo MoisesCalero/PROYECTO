@@ -8,12 +8,9 @@
 <title>Index</title>
 <!-- BOOTSTRAP -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-<!--<link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
--->
 <!--GLYPHICONS-->
 
 <!-- JQUERY -->
@@ -27,22 +24,23 @@
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/css/listaPeliculas.css"/>
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/css/login.css"/>
 <!--<script src="<?=base_url()?>assets/js/compruebaUsuario.js"></script>-->
-<style>
-	.btn-info{
-	margin-top:-4%;
-}
-#enlaceBoton{
-        background:none;
-        border:0;
-        color: #4688f1;
-		}
-		#enlaceBoton:hover{
-        background:none;
-        border:0;
-		color: #4688f1;
-		text-decoration: underline;
-        }
-	</style>
-</head>
+<script src="<?=base_url()?>assets/js/busqueda.js"></script>
+<script src="<?=base_url()?>assets/js/validacion.js"></script>
+<script src="<?=base_url()?>assets/js/cargarPorcentajesUsuario.js"></script>
 
+<link href="https://fonts.googleapis.com/css?family=Patua+One&display=swap" rel="stylesheet">
+</head>
 <body>
+<script>
+	
+/*function nobackbutton(){
+   window.location.hash="no-back-button";
+	
+   window.location.hash="Again-No-back-button" //chrome
+	
+   window.onhashchange=function(){
+    window.location.hash="no-back-button";
+    }
+	
+}*/
+</script>

@@ -1,2 +1,4 @@
-<h1>Libro creada correctamente!</h1>
-<a href="<?=base_url()?>libro/listar">Volver</a>
+<?php
+header( "refresh:3;url=".base_url()."libro/listar" );
+?>
+<h1>Libro creado correctamente!</h1>

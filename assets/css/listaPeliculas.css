@@ -2,7 +2,7 @@ body{
     	background-color: #E3E3E3;
     }
 	.container{
-		background-color: #fdffee;
+		background-color: #fcfcfc;
 		margin-top: 2%;
 		border-radius: 5px;
 		padding: 1%;
@@ -139,15 +139,22 @@ body{
 				margin-left: -43px;
 		}
 		
-		.dvSerie h4{
+		.btnTitulo h4{
 				color: black;
-				text-align: center;   
-				height:50px;
+				text-align: center;
 		}
-		
-		
+		.btnTitulo h4:hover{
+			text-decoration: underline;
+		}
 		.containerSeries{
 				display: flex;
 				flex-wrap: wrap;
 				width: 115%;
+		}
+		.btnTitulo{
+			background-color: transparent;
+			border: none;
+			outline:none;
+			text-align:center;
+			width: 100%;
 		}

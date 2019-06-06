@@ -1,1 +1,4 @@
-<h2>Persona no pudo ser modificado (dni ya existente)</h2>
+<?php
+header( "refresh:3;url=".base_url()."serie/listar" );
+?>
+<h1>Ha ocurrido un error al actualizar la información, inténtalo más tarde</h1>

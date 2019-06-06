@@ -2,38 +2,42 @@
 
 class Serie extends CI_Controller
 {
-    
+    //Redirige a la función de listar
+    public function index() {
+        $this->listar();
+    }
+    //Redirige al formulario de creación de una serie
     public function crear()
     {
         frame($this, 'serie/crear');
     }
+    //Recibe los datos del formulario y si son correctos, crea la serie
     public function crearPost()
     {
         $nombre = isset($_POST['nombre']) && ! empty($_POST['nombre']) ? $_POST['nombre'] : null;
         $descripcion = isset($_POST['descripcion']) && ! empty($_POST['descripcion']) ? $_POST['descripcion'] : null;
         $genero = isset($_POST['genero']) && ! empty($_POST['genero']) ? $_POST['genero'] : null;
         $duracion = isset($_POST['duracion']) && ! empty($_POST['duracion']) ? $_POST['duracion'] : null;
-        $valoracion = isset($_POST['valoracion']) && ! empty($_POST['valoracion']) ? $_POST['valoracion'] : null;
         $fecha = isset($_POST['fecha']) && ! empty($_POST['fecha']) ? $_POST['fecha'] : null;
         $temporadas= isset($_POST['temporadas']) && ! empty($_POST['temporadas']) ? $_POST['temporadas'] : null;
         $capitulos = isset($_POST['capitulos']) && ! empty($_POST['capitulos']) ? $_POST['capitulos'] : null;
-        if ($nombre!=null && $descripcion!=null && $genero!=null && $duracion!=null && $valoracion!=null && $fecha!=null && $temporadas!=null && $capitulos!=null) {
+        $imagenes=isset($_FILES['imagenSerie'])&& ! empty($_FILES['imagenSerie'])?$_FILES['imagenSerie']:null;
+        if ($nombre!=null && $descripcion!=null && $genero!=null && $duracion!=null && $fecha!=null && $temporadas!=null && $capitulos!=null) {
             $this->load->model('serie_model');
-            $ok = $this->serie_model->crear($nombre, $descripcion, $genero, $duracion, $valoracion, $fecha, $temporadas, $capitulos);
+            $ok = $this->serie_model->crear($nombre, $descripcion, $genero, $duracion, $fecha, $temporadas, $capitulos, $imagenes);
             if ($ok) {
                 $data=[];
                 $data['serie'] = $nombre;
                 frame($this, 'serie/crearOK', $data);
             } else {
                 $data['serie'] = $nombre;
-                //Redirigir al formulario avisando del error(mejor hacerlo con ajax antes de enviarlo, asi no redirige a nada)
                 frame($this, 'serie/crearERROR', $data);
             }
         } else {
             // Mensaje ERROR
         }
     }
-    //------------------------------------------------------ME HE QUEDADO AQUI
+    //Carga una lista de todas las series
     public function listar()
     {
         $this->load->model('serie_model');
@@ -51,19 +55,21 @@ class Serie extends CI_Controller
          }
             frame($this, 'serie/listar', $data);
     }
+    //Carga los detalles de una serie en concreto
     public function detalles(){
         $this->load->model('serie_model');
         $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
         $data=null;
-        //ESTO LISTARA SOLO EL USUARIO ACTIVO,CON SU INFORMACION ����NO TODOS LOS USUARIOS!!!
+        $data['mediaValoracion']=null;
         if($id!=null){
             $data['serie'] = $this->serie_model->getSerieById($id);
+            $data['mediaValoracion']=$this->serie_model->getValoracionMedia($id);
         }
         frame($this, 'serie/detalles', $data);
     }
+    //Redirige al formulario de actualización de un usuario
     public function update()
     {
-        //------------------CAMBIAR $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
         $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
         if ($id != null) {
             $this->load->model('serie_model');
@@ -73,23 +79,23 @@ class Serie extends CI_Controller
             redirect(base_url());
         }
     }
-    
+    //Recibe los datos del formulario y si son correctos, actualiza la serie
     public function updatePost()
     {
         $nombre_nuevo = isset($_POST['nombre']) && ! empty($_POST['nombre']) ? $_POST['nombre'] : null;
         $descripcion_nuevo = isset($_POST['descripcion']) && ! empty($_POST['descripcion']) ? $_POST['descripcion'] : null;
         $genero_nuevo = isset($_POST['genero']) && ! empty($_POST['genero']) ? $_POST['genero'] : null;
         $duracion_nuevo = isset($_POST['duracion']) && ! empty($_POST['duracion']) ? $_POST['duracion'] : null;
-        $valoracion_nuevo = isset($_POST['valoracion']) && ! empty($_POST['valoracion']) ? $_POST['valoracion'] : null;
         $fecha_nuevo = isset($_POST['fecha']) && ! empty($_POST['fecha']) ? $_POST['fecha'] : null;
         $temporadas_nuevo = isset($_POST['temporadas']) && ! empty($_POST['temporadas']) ? $_POST['temporadas'] : null;
         $capitulos_nuevo = isset($_POST['capitulos']) && ! empty($_POST['capitulos']) ? $_POST['capitulos'] : null;
+        $imagenes=isset($_FILES['imagenSerie'])&& ! empty($_FILES['imagenSerie'])?$_FILES['imagenSerie']:null;
         
         $id = isset($_POST['id']) && ! empty($_POST['id']) ? $_POST['id'] : null;
         
-        if ($nombre_nuevo!=null && $descripcion_nuevo!=null && $genero_nuevo!=null && $duracion_nuevo!=null && $valoracion_nuevo!=null && $fecha_nuevo!=null && $temporadas_nuevo!=null && $capitulos_nuevo!=null) {
+        if ($nombre_nuevo!=null && $descripcion_nuevo!=null && $genero_nuevo!=null && $duracion_nuevo!=null && $fecha_nuevo!=null && $temporadas_nuevo!=null && $capitulos_nuevo!=null) {
             $this->load->model('serie_model');
-            $ok = $this->serie_model->update($id, $nombre_nuevo, $descripcion_nuevo, $genero_nuevo, $duracion_nuevo, $valoracion_nuevo, $fecha_nuevo, $temporadas_nuevo, $capitulos_nuevo);
+            $ok = $this->serie_model->update($id, $nombre_nuevo, $descripcion_nuevo, $genero_nuevo, $duracion_nuevo, $fecha_nuevo, $temporadas_nuevo, $capitulos_nuevo, $imagenes);
             if ($ok) {
                 redirect(base_url() . 'serie/listar');
             } else {
@@ -99,7 +105,7 @@ class Serie extends CI_Controller
             // Mensaje ERROR
         }
     }
-    
+    //Elimina una serie
     public function delete() {
         $id = isset($_POST['id']) && ! empty($_POST['id']) ? $_POST['id'] : null;
         if ($id != null) {
@@ -108,6 +114,7 @@ class Serie extends CI_Controller
             header("location: ../serie/listar");
         }
     }
+    //Recibe información de una serie y un usuario y crea un comentario
     public function crearComentario(){
         $usuario=$_REQUEST['usuario'];
         $serie=$_REQUEST['serie'];
@@ -124,7 +131,7 @@ class Serie extends CI_Controller
             // Mensaje ERROR
         }
     }
-    //Cambiar el estado de la película
+    //Cambiar el estado de la serie
     public function cambiaEstado(){
         $estado=$_POST['estado'];
         $usuario=$_POST['usuario'];
@@ -132,14 +139,14 @@ class Serie extends CI_Controller
         $this->load->model('serie_model');
         $ok=$this->serie_model->cambiarEstado($estado, $usuario, $serie);
     }
-    //Añadir película a favoritos
+    //Añadir serie a favoritos
     public function Favoritos(){
         $usuario=$_POST['usuario'];
         $serie=$_POST['serie'];
         $this->load->model('serie_model');
         $ok=$this->serie_model->Favorito($usuario, $serie);
     }
-    //Cambiar la valoración de una película
+    //Cambiar la valoración de una serie
     public function cambiaValoracion(){
         $valor=$_POST['valoracion'];
         $usuario=$_POST['usuario'];
@@ -147,7 +154,7 @@ class Serie extends CI_Controller
         $this->load->model('serie_model');
         $ok=$this->serie_model->cambiarValoracion($valor, $usuario, $serie);
     }
-    //Cargar los favoritos de un usuario al acceder a una película en concreto
+    //Cargar los favoritos de un usuario al acceder a una serie en concreto
     public function cargaFavoritos(){
         $usuario=$_REQUEST['usuario'];
         $serie=$_REQUEST['serie'];
@@ -155,7 +162,7 @@ class Serie extends CI_Controller
         $ok=$this->serie_model->cargaFavorito($usuario, $serie);
         echo $ok;
     }
-    //Cargar el estado de una película al entrar
+    //Cargar el estado de una serie al entrar
     public function cargaEstado(){
         $usuario=$_REQUEST['usuario'];
         $serie=$_REQUEST['serie'];
@@ -163,7 +170,7 @@ class Serie extends CI_Controller
         $ok=$this->serie_model->cargaEstado($usuario, $serie);
         echo $ok;
     }
-    //Cargar la valoración de una película al entrar
+    //Cargar la valoración de una serie al entrar
     public function cargaValoracion(){
         $usuario=$_REQUEST['usuario'];
         $serie=$_REQUEST['serie'];

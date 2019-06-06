@@ -24,7 +24,6 @@ body{
     border:5px solid white;
 }
 .fondo{
-     background-image: url("<?=base_url()?>assets/img/bat.jpg");
      background-size: 100%;
      background-repeat: no-repeat;
      margin-right:1%;
@@ -67,6 +66,10 @@ iframe{
     width:75%;
     
 }
+.titulo{
+    color: black;
+    text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+}
 .comentIndividual{
     
     width:12%;
@@ -89,3 +92,16 @@ iframe{
 .btn-link{
     display:inline-block;
 }
+#contIframe{
+
+    padding-bottom:56.25%;
+    
+    position:relative;
+    
+    display:block;
+    
+    width: 90%;
+    
+    margin-right:10%;
+    
+    }

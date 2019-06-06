@@ -1,2 +1,4 @@
-<h1>Música creada correctamente!</h1>
-<a href="<?=base_url()?>musica/listar">Volver</a>
+<?php
+header( "refresh:3;url=".base_url()."musica/listar" );
+?>
+<h1>MÃºsica creada correctamente!</h1>

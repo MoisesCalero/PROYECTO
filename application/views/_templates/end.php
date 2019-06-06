@@ -1,6 +1,9 @@
+<!-- Se cierra el container que fue abierto en el nav y se pasa al footer -->
 </div>
 </body>
-<footer class="section footer-classic context-dark bg-image"
+<link href="<?=base_url()?>assets/css/index.css"/>
+<!-- Pie de página -->
+<footer class="section footer-classic context-dark bg-image page-footer"
 	style="background: #2d3246;">
 	<div class="row row-30">
 		<div class="col-md-4 col-xl-5">

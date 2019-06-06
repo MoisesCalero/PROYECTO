@@ -1,48 +1,63 @@
 <body>
+<?php if(isset($_SESSION['rol']) && $_SESSION['rol']!="administrador"):?>
+<h1>No tienes permiso para entrar aquí</h1>
+<?php endif;?>
+<?php if(isset($_SESSION['rol']) && $_SESSION['rol']=="administrador"):?>
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form action="<?=base_url()?>serie/updatePost" method="POST">
+				<form action="<?=base_url()?>serie/updatePost" method="POST" enctype="multipart/form-data" name="miForm">
 					<div class="modal-header">						
 						<h4 class="modal-title">Crear serie:</h4>
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
 						<label><span>*</span>Nombre:</label>
-							<input type="text" class="form-control" name="nombre" value="<?=$serie->nombre?>">
-						
+							<input type="text" class="form-control" name="nombre" value="<?=$serie->nombre?>" id="nombre">
+						<div id="errorNombre"></div>
 							<label><span>*</span>Descripción:</label>
-							<input type="text" class="form-control form-control-sm" name="descripcion" value="<?=$serie->descripcion?>">
-											
-							<label>Género:</label>
-							<input type="text" class="form-control form-control-sm" name="genero" value="<?=$serie->genero?>" >
-							
+							<input type="text" class="form-control form-control-sm" name="descripcion" value="<?=$serie->descripcion?>" id="descripcion">
+						<div id="errorDescripcion"></div>
+						<label>Género:</label>
+						<select name="genero" id="genero" class="form-control form-control-sm" required>
+							<option value="accion">Acción</option>
+							<option value="animacion">Animación</option>
+							<option value="aventuras">Aventuras</option>
+							<option value="cienciaficcion">Ciencia ficción</option>
+							<option value="misterio">Misterio</option>
+							<option value="terror">Terror</option>
+							<option value="accion">Acción</option>
+							<option value="fantasia">Fantasía</option>
+							<option value="superheroes">Superhéroes</option>
+							<option value="romantica">Romántica</option>
+							<option value="drama">Drama</option>
+							<option value="comedia">Comedia</option>
+							<option value="thriller">Thriller</option>
+							</select>
 							<label><span>*</span>Duración:</label>
-							<input type="text" class="form-control form-control-sm" name="duracion" value="<?=$serie->duracion?>">
-
-							<label>Valoración:</label>
-							<input type="text" class="form-control form-control-sm" name="valoracion" value="<?=$serie->valoracion?>">
-
+							<input type="text" class="form-control form-control-sm" name="duracion" value="<?=$serie->duracion?>" id="duracion">
+							<div id="errorDuracion"></div>
 							<label><span>*</span>Fecha:</label>
-							<input type="text" class="form-control form-control-sm" name="fecha" value="<?=$serie->fecha?>" >
+							<input type="text" class="form-control form-control-sm" name="fecha" id="fecha" value="<?=$serie->fecha?>" id="fecha">
+							<div id="errorFecha"></div>
+							<label><span>*</span>Imagen:</label>
+                    		<input type="file" class="form-control form-control-sm" name="imagenSerie" id="imagenSerie">
 
 							<label><span>*</span>Temporadas:</label>
-							<input type="text" class="form-control form-control-sm" name="temporadas" value="<?=$serie->temporadas?>" >
-							
+							<input type="text" class="form-control form-control-sm" name="temporadas" value="<?=$serie->temporadas?>" id="temporadas">
+							<div id="errorTemporada"></div>
 							<label><span>*</span>Capítulos:</label>
-							<input type="text" class="form-control form-control-sm" name="capitulos" value="<?=$serie->capitulos?>" >
-							
+							<input type="text" class="form-control form-control-sm" name="capitulos" value="<?=$serie->capitulos?>" id="capitulos">
+							<div id="errorCapitulo"></div>
 							<input type="hidden" class="form-control form-control-sm" name="id" value="<?=$serie->id?>" >
+							<br>
+							<span style="margin-left: 15px;">*</span> Campos obligatiorios
+							<br>
+							<br>
+						<input type="button" class="btn btn-info" value="Crear" onclick="validarForm('serie')">
 						</div>
 					</div>
-						<span style="margin-left: 15px;">*</span> Campos obligatiorios
-						<input type="submit" class="btn btn-info" value="Crear" onclick="">
+						
 				</form>
 			</div>
-				
-
-	<!--Bootstrap-->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body>
-</html>
+<?php endif;?>
+</div>

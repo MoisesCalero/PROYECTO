@@ -2,7 +2,8 @@
 
 class Libro_model extends CI_Model
 {
-    public function crear($nombre, $descripcion, $genero, $numero_paginas, $autor, $editorial, $valoracion, $fecha)
+    /* CREAR UN LIBRO NUEVO */
+    public function crear($nombre, $descripcion, $genero, $numero_paginas, $autor, $editorial, $fecha, $idUsu, $imagen)
     {
         $ok = false;
         
@@ -11,7 +12,6 @@ class Libro_model extends CI_Model
         ]);
         $ok = ($bean == null);
         
-        // R::debug();
         if ($ok) {
             $libro= R::dispense('libro');
             $libro->nombre= $nombre;
@@ -20,30 +20,62 @@ class Libro_model extends CI_Model
             $libro->numero_paginas = $numero_paginas;
             $libro->autor = $autor;
             $libro->editorial = $editorial;
-            $libro->valoracion = $valoracion;
             $libro->fecha= $fecha;
+            $libro->usuario=R::load('usuario', $idUsu);
+            //Subir una imagen
+            if($imagen["name"]!=null){
+                $imageFileType=strtolower(pathinfo($imagen['name'],PATHINFO_EXTENSION));
+                $imagen['name'] = $nombre.".".$imageFileType;
+                $target_dir = "assets/img/caratulas/libros/";
+                $target_file = $target_dir . $imagen["name"];
+                $uploadOk = 1;
+                $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                // Comprobar el tamaño del archivo
+                if ($imagen["size"] > 500000) {
+                    echo "El tamaño del archivo es demasiado grande.";
+                    $uploadOk = 0;
+                }
+                // Permitir ciertos formatos de archivo
+                if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif" ) {
+                    echo "Lo sentimos, solo se pueden subir imágenes en formato jpg., png, jpeg o gif";
+                    $uploadOk = 0;
+                }
+                // Comprobar si está todo bien
+                if ($uploadOk == 0) {
+                    echo "Ups, ha ocurrido un error, no es ha podido subir tu archivo.";
+                // Si todo está bien, se intenta subir la imagen
+                } else {
+                    if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
+                        $libro->ruta_caratula=$target_file;
+                    }
+                }
+            }
             R::store($libro);
         }
         return $ok;
     }    
+    //CARGAR UN LIBRO A PARTIR DE SU ID
     public function getLibroById($id)
     {
         return R::findOne('libro', 'id=?', [
             $id
         ]);
     }
+    //CARGAR UN LIBRO A PARTIR DE SU NOMBRE
     public function getLibroByNombre($nombre)
     {
         return R::findOne('libro', 'nombre=?', [
             $nombre
         ]);
     }
+    //LISTAR TODOS LOS LIBROS
     public function listar()
     {
         return R::findAll('libro');
     }
-    
-    public function update($id, $nombre_nuevo, $descripcion_nuevo, $genero_nuevo, $numero_paginas_nuevo, $autor_nuevo, $editorial_nuevo, $valoracion_nuevo, $fecha_nuevo)
+    //ACTUALIZAR UN LIBRO
+    public function update($id, $nombre_nuevo, $descripcion_nuevo, $genero_nuevo, $numero_paginas_nuevo, $autor_nuevo, $editorial_nuevo, $fecha_nuevo, $imagen)
     {
         $ok = false;
         
@@ -60,15 +92,42 @@ class Libro_model extends CI_Model
             $libro->numero_paginas = $numero_paginas_nuevo;
             $libro->autor = $autor_nuevo;
             $libro->editorial = $editorial_nuevo;
-            $libro->valoracion = $valoracion_nuevo;
             $libro->fecha= $fecha_nuevo;
+            //SUBIR LA IMAGEN
+            if(!empty($imagen)){
+                $imageFileType=strtolower(pathinfo($imagen['name'],PATHINFO_EXTENSION));
+                $imagen['name'] = $nombre.".".$imageFileType;
+                $target_dir = "assets/img/caratulas/libros/";
+                $target_file = $target_dir . $imagen["name"];
+                $uploadOk = 1;
+                $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                // Comprobar el tamaño del archivo
+                if ($imagen["size"] > 500000) {
+                    echo "El tamaño del archivo es demasiado grande.";
+                    $uploadOk = 0;
+                }
+                // Permitir ciertos formatos de archivo
+                if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif" ) {
+                    echo "Lo sentimos, solo se pueden subir imágenes en formato jpg., png, jpeg o gif";
+                    $uploadOk = 0;
+                }
+                // Comprobar si está todo bien
+                if ($uploadOk == 0) {
+                    echo "Ups, ha ocurrido un error, no es ha podido subir tu archivo.";
+                // Si todo está bien, se intenta subir la imagen
+                } else {
+                    if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
+                        $libro->ruta_caratula=$target_file;
+                    }
+                }
+            }
             R::store($libro);
-            // R::debug();
             
         }
         return $ok;
     }
-    
+    //ELIMINAR UN LIBRO
     public function delete($id)
     {
         $libro = R::load('libro', $id);
@@ -202,5 +261,72 @@ public function cargaValoracion($usuario, $libro){
     else{
         return "nada";
     }
+}
+//CARGAR LOS LIBROS MÁS VALORADOS
+public function getLibrosMasValorados(){
+    $ok=false;
+    $bean= R::findAll('librovaloracion');
+    $ok=$bean!=null;
+    $libros=[];
+    $media=null;
+    if($ok){
+        foreach($bean as $b){
+            $this->load->model('libro_model');
+            $media=$this->libro_model->getValoracionMedia($b->id);
+            if($media>=4){
+                array_push($libros, $b);
+            }
+        }
+        return $libros;
+    }
+    else{
+        return null;
+    }
+}
+//CARGAR LA VALORACIÓN MEDIA DE UN LIBRO
+public function getValoracionMedia($id){
+    $ok=false;
+    $bean= R::findAll('librovaloracion', 'libro_id=?', [$id]);
+    $ok=$bean!=null;
+    $media=0;
+    if($ok){
+        foreach ($bean as $b){
+            $media+=$b->valor;
+        }
+        $media=$media/sizeof($bean);
+        return $media;
+    }
+    else{
+        return ;
+    }
+}
+//CARGAR LOS LIBROS SUBIDOS POR UN USUARIO
+public function getLibrosUsuario($id){
+    $ok=false;
+    $bean= R::findAll('libro', 'usuario_id=?', [$id]);
+    $ok=$bean!=null;
+    if($ok){
+        return $bean;
+    }
+    else{
+        return "";
+    }
+}
+//CARGAR LOS 10 PRIMEROS LIBROS ORDENADOS POR SU FECHA DE PUBLICACIÓN(DEL MÁS NUEVO AL MÁS ANTIGUO)
+public function getLibrosRecientes(){
+    $ok=false;
+    $bean= R::findAll('libro', 'order by fecha desc limit 10');
+    $ok=$bean!=null;
+    $media=null;
+    if($ok){
+        return $bean;
+    }
+    else{
+        return null;
+    }
+}
+//BUSCAR UN LIBRO A PARTIR DE UNA PARTE DE SU NOMBRE
+public function buscaLibros($cadena){
+    return R::findAll('libro', 'nombre LIKE ?', [$cadena."%"]);
 }
 }

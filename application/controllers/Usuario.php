@@ -2,17 +2,17 @@
 
 class Usuario extends CI_Controller
 {
-
+    //Redirige al formulario de creación de un usuario
     public function crear()
     {
         frame($this, 'usuario/crear');
     }
-
+    //Redirige al formulario de login
     public function login()
     {
         frame($this, 'usuario/login');
     }
-
+    //Recibe los datos y si son correctos, inicia la sesión del usuario
     public function loginPost()
     {
         $nombreUsuario = isset($_POST['nombreUsuario']) && ! empty($_POST['nombreUsuario']) ? $_POST['nombreUsuario'] : null;
@@ -26,7 +26,7 @@ class Usuario extends CI_Controller
                     $_SESSION['usuario'] = $nombreUsuario;
                     $_SESSION['id'] = $data['usuario']->id;
                     $_SESSION['rol']=$data['usuario']->rol;
-                    header("location: ../home/presentacion");
+                    header("location: ".base_url());
                 }
                 else{
                     header("location: ../usuario/login");
@@ -36,7 +36,24 @@ class Usuario extends CI_Controller
             }
         }
     }
-
+    //Redirige al formulario para cambiar la imagen de perfil del usuario
+    public function cambiarImagen(){
+        frame($this, 'usuario/cambiarImagen');
+    }
+    //Recibe la imagen y si es correcto, cambia la imagen de perfil
+    public function cambiarImagenPost(){
+        $id=isset($_POST['id']) && ! empty($_POST['id']) ? $_POST['id'] : null;
+        $imagenes=$_FILES['imagen'];
+        
+        if($id!=null){
+            $this->load->model('usuario_model');
+            $res=$this->usuario_model->cambiarImagen($id, $imagenes);
+            if($res=="ok"){
+                header("location: ".base_url());
+            }
+    }
+}
+    //Recibe los datos del usuario, y si son correctos crea un usuario nuevo
     public function crearPost()
     {
         $correo = isset($_POST['correo']) && ! empty($_POST['correo']) ? $_POST['correo'] : null;
@@ -56,49 +73,76 @@ class Usuario extends CI_Controller
                 $data['usuario'] = $nombreUsuario;
                 frame($this, 'usuario/crearOK', $data);
             } else {
-                // Redirigir al formulario avisando del error(mejor hacerlo con ajax antes de enviarlo, asi no redirige a nada)
-                // Al estar hecho con AJAX no debería redirigir a nada
-                // frame($this, 'usuario/crearERROR', $data);
+                frame($this, 'usuario/crearERROR', $data);
             }
         } else {
             frame($this, "usuario/crearERROR");
         }
     }
-
-    // ------------------------------------------------------ME HE QUEDADO AQUI
+    //Carga los datos del usuario que ha iniciado la sesión
     public function listar()
     {
         $this->load->model('usuario_model');
+        $this->load->model('pelicula_model');
+        $this->load->model('serie_model');
+        $this->load->model('libro_model');
+        $this->load->model('musica_model');
         $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
         $data = null;
-        // ESTO LISTARA SOLO EL USUARIO ACTIVO,CON SU INFORMACION ����NO TODOS LOS USUARIOS!!!
+        $data['pelisFavoritas']=null;
+        $data['musicasFavoritas']=null;
+        $data['librosFavoritos']=null;
+        $data['seriesFavoritas']=null;
+        $data['librosPropios']=null;
+        $data['musicasPropias']=null;
         if ($id != null) {
             $data['usuario'] = $this->usuario_model->getUsuarioById($id);
-        } else {
-            if(!isset($_SESSION['usuario'])){
-                session_start();
-            }
-            $nombre = $_SESSION['usuario'];
-            $data['usuario'] = $this->usuario_model->getUsuarioByNombre($nombre);
+            $data['pelisFavoritas']= $this->pelicula_model->getPeliculasFavoritas($id);
+            $data['musicasFavoritas']= $this->musica_model->getMusicasFavoritas($id);
+            $data['librosFavoritos']= $this->libro_model->getLibrosFavoritos($id);
+            $data['seriesFavoritas']= $this->serie_model->getSeriesFavoritas($id);
+            $data['librosPropios']=$this->libro_model->getLibrosUsuario($id);
+            $data['musicasPropias']=$this->musica_model->getMusicasUsuario($id);
         }
-        frame($this, 'usuario/listar', $data);
+        session_start();
+        if($_SESSION['id']!=$id){
+            frame($this, "usuario/error");
+        }
+        else{
+            frame($this, 'usuario/listar', $data);
+        }
     }
+    //Carga los datos de un usuario, solo con permiso de lectura, no puede modificar nada
     public function ver()
     {
         $this->load->model('usuario_model');
+        $this->load->model('pelicula_model');
+        $this->load->model('serie_model');
+        $this->load->model('libro_model');
+        $this->load->model('musica_model');
         $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
         $data = null;
-        // ESTO LISTARA SOLO EL USUARIO ACTIVO,CON SU INFORMACION ����NO TODOS LOS USUARIOS!!!
+        $data['pelisFavoritas']=null;
+        $data['musicasFavoritas']=null;
+        $data['librosFavoritos']=null;
+        $data['seriesFavoritas']=null;
+        $data['librosPropios']=null;
+        $data['musicasPropias']=null;
         if ($id != null) {
             $data['usuario'] = $this->usuario_model->getUsuarioById($id);
+            $data['pelisFavoritas']= $this->pelicula_model->getPeliculasFavoritas($id);
+            $data['musicasFavoritas']= $this->musica_model->getMusicasFavoritas($id);
+            $data['librosFavoritos']= $this->libro_model->getLibrosFavoritos($id);
+            $data['seriesFavoritas']= $this->serie_model->getSeriesFavoritas($id);
+            $data['librosPropios']=$this->libro_model->getLibrosUsuario($id);
+            $data['musicasPropias']=$this->musica_model->getMusicasUsuario($id);
         } else {
         }
         frame($this, 'usuario/ver', $data);
     }
-
+    //Redirige al formulario para actualizar un usuario
     public function update()
     {
-        // ------------------CAMBIAR $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
         $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
         if ($id != null) {
             $this->load->model('usuario_model');
@@ -108,7 +152,7 @@ class Usuario extends CI_Controller
             redirect(base_url());
         }
     }
-
+    //Recibe los datos del formulario y si son correctos, actualiza un usuario
     public function updatePost()
     {
         $correo_nuevo = isset($_POST['correo']) && ! empty($_POST['correo']) ? $_POST['correo'] : null;
@@ -127,7 +171,7 @@ class Usuario extends CI_Controller
             if ($ok) {
                 session_start();
                 $_SESSION['usuario'] = $nombreUsuario_nuevo;
-                redirect(base_url() . 'home/presentacion');
+                redirect(base_url() . 'usuario/updateOK');
             } else {
                 frame($this, 'usuario/updateERROR');
             }
@@ -135,9 +179,9 @@ class Usuario extends CI_Controller
             // Mensaje ERROR
         }
     }
+    //Redirige aal formulario de actualizar contraseña
     public function updatePassword()
     {
-        // ------------------CAMBIAR $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
         $id = (isset($_POST['id']) && ! empty($_POST['id'])) ? $_POST['id'] : null;
         if ($id != null) {
             $this->load->model('usuario_model');
@@ -147,6 +191,7 @@ class Usuario extends CI_Controller
             redirect(base_url());
         }
     }
+    //Recibe los datos y si son correctos, cambia la contraseña
     public function updatePasswordPost()
     {
         $claveAnt = isset($_POST['claveAnt']) && ! empty($_POST['claveAnt']) ? $_POST['claveAnt'] : null;
@@ -157,16 +202,26 @@ class Usuario extends CI_Controller
 
         if ($claveAnt!=null && $claveNueva!=null) {
             $this->load->model('usuario_model');
-            $ok = $this->usuario_model->updatePassword($id,$claveNueva);
-            if ($ok) {
-                frame($this, 'usuario/updatePasswordOK');
-            } else {
-                frame($this, 'usuario/updateERROR');
+            $usuario=$this->usuario_model->getUsuarioById($id);
+            if($usuario!=null){
+                if($usuario->clave==$claveAnt){
+                    $ok = $this->usuario_model->updatePassword($id,$claveNueva);
+                    if ($ok) {
+                        frame($this, 'usuario/updatePasswordOK');
+                    } else {
+                        frame($this, 'usuario/updateERROR');
+                    }
+                }
+                else{
+                    //ERROR
+                }
             }
+           
         } else {
             // Mensaje ERROR
         }
     }
+    //Busca un usuario a partir de su nombre
     public function buscar(){
         $nombre=$_REQUEST['nombre'];
         $this->load->model('usuario_model');
@@ -178,7 +233,7 @@ class Usuario extends CI_Controller
             echo "ok";
         }
     }
-
+    //Elimina un usuario
     public function delete()
     {
         $id = isset($_POST['id']) && ! empty($_POST['id']) ? $_POST['id'] : null;
@@ -189,18 +244,19 @@ class Usuario extends CI_Controller
             $_SESSION = [];
             session_destroy();
             $this->usuario_model->delete($id);
-            header("location: ../home/presentacion");
+            header("location: ".base_url());
         }
     }
-
+    //Cierra la sesión del usuario activo
     public function logout()
     {
         session_start();
         $_SESSION['usuario'] = "";
         $_SESSION = [];
         session_destroy();
-        header("location: ../home/presentacion");
+        header("location: ".base_url());
     }
+    //Redirige a formulario de mejora de cuenta de usuario
     public function upgrade(){
         $id=isset($_POST['id']) && ! empty($_POST['id'])?$_POST['id']:null;
         if($id!=null){
@@ -209,20 +265,32 @@ class Usuario extends CI_Controller
             frame($this, 'usuario/upgrade', $data);
         }
     }
+    //Recibe los datos del formulario y si son correctos, mejora el rol del usuario
     public function upgradePost(){
         $id=isset($_POST['id']) && ! empty($_POST['id'])?$_POST['id']:null;
         if($id!=null){
             $this->load->model('usuario_model');
             $data['usuario'] = $this->usuario_model->mejorarCuenta($id);
-            frame($this, 'home/presentacion', $data);
+            //revisar
+            session_start();
+            session_destroy();
+            frame($this, 'usuario/login');
         }
     }
+    //Cargar una lista de todos los usuarios
     public function listarTodo(){
         $this->load->model('usuario_model');
         $usuarios = $this->usuario_model->listar();
         $data=[];
         $data['usuarios'] = $usuarios;
         frame($this, 'usuario/listarTodo', $data);
+    }
+    //Cargar los porcentajes del total de número de series, pelis y demás que han sido vistas, dejadas... por un usuario
+    public function cogerPorcentajes(){
+        $usuario=$_REQUEST['usuario'];
+        $this->load->model('usuario_model');
+        $porcentajes=$this->usuario_model->getPorcentajes($usuario);
+        echo $porcentajes;
     }
 }
 

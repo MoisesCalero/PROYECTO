@@ -44,7 +44,7 @@ function comprobarEstado(argument) {
 			if(peticion_httpEstado.responseText=="seguir"){
 				document.getElementById("estado").selectedIndex="1";
 			}
-			else if(peticion_httpEstado.responseText=="viendo"){
+			else if(peticion_httpEstado.responseText=="pendiente"){
 				document.getElementById("estado").selectedIndex="2";
 			}
 			else if(peticion_httpEstado.responseText=="terminada"){
@@ -201,7 +201,7 @@ function comprobarValoracion(argument) {
 		}
 	}
 		//Añadir un comentario
-		function enviarForm(){
+		function enviarForm(tipo){
 			if(window.XMLHttpRequest){
 				peticion_httpComentario= new XMLHttpRequest();
 			}else if (window.ActiveXObject) {
@@ -212,7 +212,7 @@ function comprobarValoracion(argument) {
 			var comentario=document.getElementById("comment").value;
 			peticion_httpComentario.open('POST', "crearComentario" , true);         
 			peticion_httpComentario.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			peticion_httpComentario.send("comentario="+comentario+"&usuario="+usuario+"&pelicula="+pelicula);
+			peticion_httpComentario.send("comentario="+comentario+"&usuario="+usuario+"&"+tipo+"="+pelicula);
 			peticion_httpComentario.onreadystatechange=muestraContenidoCom;
 		}
 		//Comprobar que se modifique correctamente el estado de favoritos

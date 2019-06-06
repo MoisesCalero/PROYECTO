@@ -14,15 +14,20 @@
     .pulsable:hover{
         background-color: #4660CB;
     }
-
+footer{
+    /*background-position: center center;
+    background-repeat: no-repeat;*/
+    width: 100%;
+    /*margin-top:12%;*/
+}
     body{
         background-color: #E3E3E3;
+        /*display: flex;
+        flex-direction: column;*/
     }
-    .buscador {
-    position: absolute;
-    left: 138%;
-    transform: translatex(-50%);
-    }
+    /*.buscador {
+    float:right;
+    }*/
     .pulsable button{
     background:none;
     border:0;
@@ -34,7 +39,7 @@
     }
 	#botonTamanio{
         padding:4px;
-        margin-top:20%;
+        margin-top:10%;
         margin-right:20px!important;
 		
 	}
@@ -84,11 +89,6 @@
 .footer-classic a, .footer-classic a:focus, .footer-classic a:active {
     color: #ffffff;
 }
-footer{
-	width: 100%;
-	position: absolute;
-	/*bottom 0;*/
-}
 .nav-list li {
     padding-top: 5px;
     padding-bottom: 5px;
@@ -131,3 +131,47 @@ ul, ol {
     visibility: hidden;
     transition: .22s ease;
 }
+
+.btn-outline-success{
+    margin-left: 5px;
+    margin-top:2px;
+    background-color: inherit;
+}
+.inputBusqueda{
+    border-radius: 25px;
+}
+#divBusqueda{
+    background-color: #fcfcfc;
+    width:175px;
+    border-radius: 5px;
+    margin-left:10px;
+    
+}
+.inputBusqueda{
+    width:200px!important;
+  
+}
+.row{
+    margin-right:0px!important;
+}
+
+body{
+    font-family: 'Patua One';
+  }
+  h1,h2,h3,h4,h5,h6,p,div,button,a,select{
+    font-family: 'Patua One';
+  }
+      .btn-info{
+      margin-top:-4%;
+  }
+  #enlaceBoton{
+          background:none;
+          border:0;
+          color: #4688f1;
+          }
+          #enlaceBoton:hover{
+          background:none;
+          border:0;
+          color: #4688f1;
+          text-decoration: underline;
+          }

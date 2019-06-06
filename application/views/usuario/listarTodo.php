@@ -1,5 +1,7 @@
-
-
+<?php if(isset($_SESSION['rol']) && $_SESSION['rol']!="administrador"):?>
+<h1>No tienes permiso para entrar aquí</h1>
+<?php endif;?>
+<?php if(isset($_SESSION['rol']) && $_SESSION['rol']=="administrador"):?>
 <h2>Lista de usuarios</h2>
 <table class="table table-bordered table-hover">
 	
@@ -38,3 +40,4 @@
 			</tr>
 			<?php endforeach;?>
 </table>
+<?php endif;?>

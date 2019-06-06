@@ -1,28 +1,22 @@
 <link href="<?=base_url()?>assets/css/listaPeliculas.css"/>
+<?php if(isset($_SESSION['rol']) && $_SESSION['rol']=="premium"):?>
+<!-- Comprobar el rol del usuario para verificar si puede crear un libro o no, en este caso
+pueden acceder tanto usuarios premium como administradores -->
+
+<!-- El botón es diferente para premium y administrador porque en el caso de un usuario premium
+el libro se asociará a su usuario -->
+<form action="<?=base_url()?>libro/crear" method="POST">
+<input type="hidden" name="id" value="<?=$_SESSION['id']?>"/>
+<input type="submit" class="btn btn-primary" value="Publicar un libro"/>
+</form>
+<?php endif;?>
+<?php if(isset($_SESSION['rol']) && $_SESSION['rol']=="administrador"):?>
+<form action="<?=base_url()?>libro/crear" method="POST">
+<input type="submit" class="btn btn-primary" value="Subir un libro"/>
+</form>
+<?php endif;?>
+<!-- Cargar la lista de libros -->
 <h2>Lista de libros</h2>
-<!--<div class="imagenes">
- <div id="carousel" class="carousel slide" data-ride="carousel">
- 		 <div class="carousel-inner">
-			    <div class="carousel-item active">
-			      <img class="d-block w-100" src="<?=base_url()?>assets/img/bat.jpg" alt="First slide" height="275px;">
-			    </div>
-			    <div class="carousel-item">
-			      <img class="d-block w-100" src="<?=base_url()?>assets/img/res.jpg" alt="Second slide" height="275px;">
-			    </div>
-			    <div class="carousel-item">
-			      <img class="d-block w-100" src="<?=base_url()?>assets/img/bat.jpg" alt="Third slide" height="275px;">
-			    </div>
- 	 	</div>
-	  <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
-	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-	    <span class="sr-only">Anterior</span>
-	  </a>
-	  <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-	    <span class="sr-only">Siguiente</span>
-	  </a>
-	</div>
-</div> -->
 <script type="text/javascript">
         $(document).ready(function() {
             $("#tabs").tabs();
@@ -47,6 +41,7 @@
         }
     } 
 </script>
+<!-- Tabs para navegar entre las distintas pestañas -->
 <div class="tabla" id="tabs">
 	<ul>
 		<li><a href="#tabs-1">Todas</a></li>
@@ -67,10 +62,9 @@
 							<img src="<?=base_url()?><?=$libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
 						</div>
 						<div class="h4DvSerie">
-							<h4><?= $libro->nombre?></</h4>
 							<form action="<?=base_url()?>libro/detalles" method="POST">
 								<input type="hidden" name="id" value="<?=$libro->id?>"/>
-								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+								<button type="submit" value="Detalles" class="btnTitulo"><h4><?=$libro->nombre?></h4></button>
 							</form>
 						</div>
 					</div>
@@ -106,21 +100,22 @@
 	</div>
 </div>
 		<!-- Pestaña de películas seguidas -->
-<?php if($seguidas!=null):?>
 <div id="tabs-2">
 	<div class="principalSerie">
 		<div class="principalSerie_section-1">
 			<div class="containerSeries">
+			<?php if($seguidas==null):?>
+				<h1>¡Vaya! No sigues ningún libro aún.</h1>
+				<?php endif;?>
 				<?php foreach($seguidas as $seguida):?>
 					<div class="dvSerie" style="width: 15%">
 						<div class="imgDvSerie">
 							<img src="<?=base_url()?><?=$seguida->libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
 						</div>
 						<div class="h4DvSerie">
-							<h4><?= $seguida->libro->nombre?></</h4>
 							<form action="<?=base_url()?>libro/detalles" method="POST">
 								<input type="hidden" name="id" value="<?=$seguida->libro->id?>"/>
-								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+								<button type="submit" value="Detalles" class="btnTitulo"><h4><?=$seguida->libro->nombre?></h4></button>
 							</form>
 						</div>
 					</div>
@@ -155,23 +150,24 @@
 			</div>
 	</div>
 		</div>
-	<?php endif;?>
 <!-- Pestaña de películas favoritas -->
 		<div id="tabs-3">
 			<div class="principalSerie">
 			<div class="principalSerie_section-1">
 				<div class="containerSeries">
+				<?php if($favoritas==null):?>
+				<h1>¡Vaya! No has agregado nada a favoritos aún.</h1>
+				<?php endif;?>
 				<?php foreach($favoritas as $favorita):?>
 					<div class="dvSerie" style="width: 15%">
 						<div class="imgDvSerie">
 							<img src="<?=base_url()?><?=$favorita->libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
 						</div>
 					<div class="h4DvSerie">
-						<h4><?= $favorita->libro->nombre?></</h4>
 						<form action="<?=base_url()?>libro/detalles" method="POST">
-							<input type="hidden" name="id" value="<?=$favorita->libro->id?>"/>
-							<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
-						</form>
+								<input type="hidden" name="id" value="<?=$favorita->libro->id?>"/>
+								<button type="submit" value="Detalles" class="btnTitulo"><h4><?=$favorita->libro->nombre?></h4></button>
+							</form>
 					</div>
 				</div>
 				<?php endforeach;?>
@@ -210,16 +206,18 @@
 	<div class="principalSerie">
 		<div class="principalSerie_section-1">
 			<div class="containerSeries">
+			<?php if($pendientes==null):?>
+				<h1>¡Vaya! No tienes libros pendientes aún.</h1>
+				<?php endif;?>
 				<?php foreach($pendientes as $pendiente):?>
 					<div class="dvSerie" style="width: 15%">
 						<div class="imgDvSerie">
 							<img src="<?=base_url()?><?=$pendiente->libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
 						</div>
 						<div class="h4DvSerie">
-							<h4><?= $pendiente->libro->nombre?></</h4>
-							<form action="<?=base_url()?>pelicula/detalles" method="POST">
+							<form action="<?=base_url()?>libro/detalles" method="POST">
 								<input type="hidden" name="id" value="<?=$pendiente->libro->id?>"/>
-								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+								<button type="submit" value="Detalles" class="btnTitulo"><h4><?=$pendiente->libro->nombre?></h4></button>
 							</form>
 						</div>
 					</div>
@@ -259,16 +257,18 @@
 	<div class="principalSerie">	
 		<div class="principalSerie_section-1">
 			<div class="containerSeries">
+			<?php if($vistas==null):?>
+				<h1>¡Vaya! No has terminado ningún libro aún.</h1>
+				<?php endif;?>
 				<?php foreach($vistas as $vista):?>
 					<div class="dvSerie" style="width: 15%">
 						<div class="imgDvSerie">
 							<img src="<?=base_url()?><?=$vista->libro->ruta_caratula?>" onerror="this.src='<?=base_url()?>assets/img/404.png';" alt="Imagen no encontrada" width="100%", height="100%"/>
 						</div>
 						<div class="h4DvSerie">
-							<h4><?= $vista->libro->nombre?></</h4>
 							<form action="<?=base_url()?>libro/detalles" method="POST">
 								<input type="hidden" name="id" value="<?=$vista->libro->id?>"/>
-								<input type="submit" value="Detalles" class="btn btn-info" style="margin-right:23%;margin-top:2%;"/>
+								<button type="submit" value="Detalles" class="btnTitulo"><h4><?=$vista->libro->nombre?></h4></button>
 							</form>
 						</div>
 					</div>
@@ -306,11 +306,5 @@
 		<div id="tabs-6">
 			<h1>Recomendaciones</h1>
 		</div>
-<!--
-			    <form action="<?=base_url()?>serie/detalles" method="post">
-			    <!-- <input type="hidden" name="id" value="<?=$serie->id ?>"/>
-   			    <input type="submit" class="btn btn-primary" value="Más información..."/>
-			    </form>
-				-->
 			  </div>
 			</div>

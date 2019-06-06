@@ -3,7 +3,7 @@
 class Pelicula_model extends CI_Model
 {
     //Crear una película
-    public function crear($nombre, $descripcion, $genero, $duracion, $valoracion, $fecha)
+    public function crear($nombre, $descripcion, $genero, $duracion, $fecha, $imagen)
     {
         $ok = false;
         
@@ -12,15 +12,42 @@ class Pelicula_model extends CI_Model
         ]);
         $ok = ($bean == null);
         
-        // R::debug();
         if ($ok) {
             $pelicula= R::dispense('pelicula');
-            $pelicula->nombre= $nombre;
-            $pelicula->descripcion= $descripcion;
+            $pelicula->nombre = $nombre;
+            $pelicula->descripcion = $descripcion;
             $pelicula->genero = $genero;
             $pelicula->duracion = $duracion;
-            $pelicula->valoracion = $valoracion;
-            $pelicula->fecha= $fecha;
+            $pelicula->fecha = $fecha;
+            //SUBIR UNA IMAGEN
+            if($imagen["name"]!=null){
+                $imageFileType=strtolower(pathinfo($imagen['name'],PATHINFO_EXTENSION));
+                $imagen['name'] = $nombre.".".$imageFileType;
+                $target_dir = "assets/img/caratulas/peliculas/";
+                $target_file = $target_dir . $imagen["name"];
+                $uploadOk = 1;
+                $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                // Comprobar el tamaño del archivo
+                if ($imagen["size"] > 500000) {
+                    echo "El tamaño del archivo es demasiado grande.";
+                    $uploadOk = 0;
+                }
+                // Permitir ciertos formatos de archivo
+                if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif" ) {
+                    echo "Lo sentimos, solo se pueden subir imágenes en formato jpg., png, jpeg o gif";
+                    $uploadOk = 0;
+                }
+                // Comprobar si está todo bien
+                if ($uploadOk == 0) {
+                    echo "Ups, ha ocurrido un error, no es ha podido subir tu archivo.";
+                // Si todo está bien, se intenta subir la imagen
+                } else {
+                    if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
+                        $pelicula->ruta_caratula=$target_file;
+                    }
+                }
+            }
             R::store($pelicula);
         }
         return $ok;
@@ -45,7 +72,7 @@ class Pelicula_model extends CI_Model
         return R::findAll('pelicula');
     }
     //Actualizar una película
-    public function update($id, $nombre_nuevo, $descripcion_nuevo, $genero_nuevo, $duracion_nuevo, $valoracion_nuevo, $fecha_nuevo)
+    public function update($id, $nombre_nuevo, $descripcion_nuevo, $genero_nuevo, $duracion_nuevo, $fecha_nuevo, $imagen)
     {
         $ok = false;
         
@@ -60,10 +87,37 @@ class Pelicula_model extends CI_Model
             $pelicula->descripcion= $descripcion_nuevo;
             $pelicula->genero = $genero_nuevo;
             $pelicula->duracion = $duracion_nuevo;
-            $pelicula->valoracion = $valoracion_nuevo;
             $pelicula->fecha = $fecha_nuevo;
+            //SUBIR UNA IMAGEN
+            if($imagen["name"]!=null){
+                $imageFileType=strtolower(pathinfo($imagen['name'],PATHINFO_EXTENSION));
+                $imagen['name'] = $nombre.".".$imageFileType;
+                $target_dir = "assets/img/caratulas/peliculas/";
+                $target_file = $target_dir . $imagen["name"];
+                $uploadOk = 1;
+                $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                // Comprobar el tamaño del archivo
+                if ($imagen["size"] > 500000) {
+                    echo "El tamaño del archivo es demasiado grande.";
+                    $uploadOk = 0;
+                }
+                // Permitir ciertos formatos de archivo
+                if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif" ) {
+                    echo "Lo sentimos, solo se pueden subir imágenes en formato jpg., png, jpeg o gif";
+                    $uploadOk = 0;
+                }
+                // Comprobar si está todo bien
+                if ($uploadOk == 0) {
+                    echo "Ups, ha ocurrido un error, no es ha podido subir tu archivo.";
+                // Si todo está bien, se intenta subir la imagen
+                } else {
+                    if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
+                        $pelicula->ruta_caratula=$target_file;
+                    }
+                }
+            }
             R::store($pelicula);
-            // R::debug();
             
         }
         return $ok;
@@ -203,4 +257,88 @@ class Pelicula_model extends CI_Model
             return "nada";
         }
     }
+    //CARGAR LAS PELÍCULAS MÁS VALORADAS
+    public function getPeliculasMasValoradas(){
+        $ok=false;
+        $bean= R::findAll('peliculavaloracion');
+        $ok=$bean!=null;
+        $pelis=[];
+        $media=null;
+        if($ok){
+            foreach($bean as $b){
+                $this->load->model('pelicula_model');
+                $media=$this->pelicula_model->getValoracionMedia($b->id);
+                if($media>=4){
+                    array_push($pelis, $b);
+                }
+            }
+            return $pelis;
+        }
+        else{
+            return null;
+        }
+    }
+    //CARGAR LAS 10 PRIMERAS PELÍCULAS ORDENADAS POR FECHA(DESDE LA MÁS RECIENTE)
+    public function getPeliculasRecientes(){
+        $ok=false;
+        $bean= R::findAll('pelicula', 'order by fecha desc limit 10');
+        $ok=$bean!=null;
+        $media=null;
+        if($ok){
+            return $bean;
+        }
+        else{
+            return null;
+        }
+    }
+    //CARGAR LA VALORACIÓN MEDIA DE UNA PELÍCULA
+    public function getValoracionMedia($id){
+        $ok=false;
+        $bean= R::findAll('peliculavaloracion', 'pelicula_id=?', [$id]);
+        $ok=$bean!=null;
+        $media=0;
+        if($ok){
+            foreach ($bean as $b){
+                $media+=$b->valor;
+            }
+            $media=$media/sizeof($bean);
+            return $media;
+        }
+        else{
+            return ;
+        }
+    }
+    //BUSCAR UNA PELÍCULA A PARTIR DE UNA PARTE DE SU NOMBRE
+    public function buscaPeliculas($cadena){
+        return R::findAll('pelicula', 'nombre LIKE ?', [$cadena."%"]);
+    }
+   /* public function getColorDominante($ruta){
+$extension=explode(".", $ruta);
+$img=ImageCreateFromJpeg($ruta);
+$w = imagesx($img);
+    $h = imagesy($img);
+    $r = $g = $b = 0;
+    for($y = 0; $y < $h; $y++) {
+        for($x = 0; $x < $w; $x++) {
+            $rgb = imagecolorat($img, $x, $y);
+            $r += $rgb >> 16;
+            $g += $rgb >> 8 & 255;
+            $b += $rgb & 255;
+        }
+    }
+    $pxls = $w * $h;
+    $r = dechex(round($r / $pxls));
+    $g = dechex(round($g / $pxls));
+    $b = dechex(round($b / $pxls));
+    if(strlen($r) < 2) {
+        $r = 0 . $r;
+    }
+    if(strlen($g) < 2) {
+        $g = 0 . $g;
+    }
+    if(strlen($b) < 2) {
+        $b = 0 . $b;
+    }
+    return "#" . $r . $g . $b;
+}*/
 }

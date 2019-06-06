@@ -1,7 +1,7 @@
 <link href="<?=base_url()?>assets/css/login.css"/>
 <div class="login-form">
     <form action="<?=base_url()?>usuario/loginPost" method="post">
-        <h2 class="text-center"><img src="<?=base_url()?>assets/img/logo.png" alt="logo" width="50px" height="50px">Registrate:</h2>   
+        <h2 class="text-center"><img src="<?=base_url()?>assets/img/logo.png" alt="logo" width="50px" height="50px">Inicia sesión:</h2>   
         <div class="form-group">
         	<div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -15,10 +15,10 @@
             </div>
         </div>        
         <div class="form-group">
-            <button type="submit" class="btn btn-primary login-btn btn-block">Registrar</button>
+            <button type="submit" class="btn btn-primary login-btn btn-block">Iniciar sesión</button>
         </div>
         <div class="clearfix">
-            <label class="pull-left checkbox-inline"><input type="checkbox" class="check"> Recuerdame</label><br>
+            <br>
             <a href="<?=base_url()?>usuario/ayudaLogin" class="pull-right">¿No recuerdas la contraseña?</a>
         </div>
     </form>

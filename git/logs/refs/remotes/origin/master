@@ -1,0 +1,4 @@
+0000000000000000000000000000000000000000 2a24b446fa4a511ce98e7a89114dd8d02ac8bfc9 Juan <jlopezgonzalez1@gmail.com> 1555582945 +0200	fetch --progress --prune origin: storing head
+2a24b446fa4a511ce98e7a89114dd8d02ac8bfc9 e70d03b92bbec713a1ae04b7c0b9f4b826fe0a5f Juan <jlopezgonzalez1@gmail.com> 1555584981 +0200	fetch --progress --prune origin: forced-update
+e70d03b92bbec713a1ae04b7c0b9f4b826fe0a5f 42a35c9d7153c8bbad9cd80473f8cd4a522f86fa Juan <jlopezgonzalez1@gmail.com> 1555863233 +0200	fetch --progress --prune origin: fast-forward
+42a35c9d7153c8bbad9cd80473f8cd4a522f86fa a5c811e31555c2971842174086bc04af6825f138 Juan <jlopezgonzalez1@gmail.com> 1556964281 +0200	fetch --progress --prune origin: fast-forward
